@@ -1,0 +1,6 @@
+1) Splom a seguito della riduzione
+2) Integrare altre tecniche
+3) Albero decisionale
+4) Interpetrazione variabili principali
+5) Scatterplot per piu' di due variabili usando colore, forme, dimensioni, ecc.
+6) Treemap (sulle classi separate)
