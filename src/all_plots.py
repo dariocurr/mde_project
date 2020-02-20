@@ -6,8 +6,6 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from mpl_toolkits.mplot3d import Axes3D
 from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.decomposition import KernelPCA
 from sklearn.manifold import MDS
@@ -116,13 +114,11 @@ def PCA_component_interpretation():
         rows[i] = "PCA" + str(i + 1)
         columns[i] = features[i]
     components.rename(index=rows, columns=columns, inplace=True)
-    print(components)
+    print(components.transpose())
     """
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
     for i in range(0, len(components)):
-        ax.scatter(components.iat[i, 0], components.iat[i, 1], components.iat[i, 2], marker='None')
-        ax.text(components.iat[i, 0], components.iat[i, 1], components.iat[i, 2], features[i])
+        plt.scatter(components.iat[i, 0], components.iat[i, 1], marker='None')
+        plt.text(components.iat[i, 0], components.iat[i, 1], features[i])
     plt.show()
     """
 
