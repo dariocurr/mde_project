@@ -1,5 +1,0 @@
-glimmer MDS: va bene l'mds fatto da noi?
-robust PCA: come funziona e come implementarlo?
-cardinalità dataset: va bene 1000 elementi?
-scree plot: per ogni metodo di DR?
-splom: su quanti dimensioni? e con quale tecnica?
