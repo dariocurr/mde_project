@@ -1,4 +1,4 @@
-import numpy
+import numpy as np
 import csv
 import constant
 import dataset_row
@@ -31,22 +31,22 @@ def generate_negative_patient():
 
 
 def generate_test_for_negative_patient(patient):
-    anemia_random_number = numpy.random.randint(1, 5)
+    anemia_random_number = np.random.randint(1, 5)
     patient.anemia = test_checker(anemia_random_number)
-    osteopenia_random_number = numpy.random.randint(1, 4)
+    osteopenia_random_number = np.random.randint(1, 4)
     patient.osteopenia = test_checker(osteopenia_random_number)
-    chronic_diarrhea_random_number = numpy.random.randint(1, 21)
+    chronic_diarrhea_random_number = np.random.randint(1, 21)
     patient.chronic_diarrhea = test_checker(chronic_diarrhea_random_number)
-    growth_failure_random_number = numpy.random.randint(1, 141)
+    growth_failure_random_number = np.random.randint(1, 141)
     patient.growth_failure = test_checker(growth_failure_random_number)
-    genetic_disorders_random_number = numpy.random.randint(1, 1001)
+    genetic_disorders_random_number = np.random.randint(1, 1001)
     patient.genetic_disorders = test_checker(genetic_disorders_random_number)
-    celiac_mother_random_number = numpy.random.randint(1, 101)
+    celiac_mother_random_number = np.random.randint(1, 101)
     patient.celiac_mother = test_checker(celiac_mother_random_number)
 
 
 def generate_POCT_for_negative_patient(patient):
-    poct_random_number = numpy.random.randint(1, 601)
+    poct_random_number = np.random.randint(1, 601)
     # positive POCT is highly unlikely
     if poct_random_number is 1:
         patient.POCT = constant.INCONCLUSIVE_POCT
@@ -75,25 +75,25 @@ def generate_positive_patient():
 
 
 def generate_test_for_positive_patient(patient):
-    anemia_random_number = numpy.random.randint(1, 3)
+    anemia_random_number = np.random.randint(1, 3)
     patient.anemia = test_checker(anemia_random_number)
-    osteopenia_random_number = numpy.random.randint(1, 6)
+    osteopenia_random_number = np.random.randint(1, 6)
     if osteopenia_random_number < 3:
         patient.osteopenia = constant.POSITIVE
     else:
         patient.osteopenia = constant.NEGATIVE
-    chronic_diarrhea_random_number = numpy.random.randint(1, 4)
+    chronic_diarrhea_random_number = np.random.randint(1, 4)
     patient.chronic_diarrhea = test_checker(chronic_diarrhea_random_number)
-    growth_failure_random_number = numpy.random.randint(1, 6)
+    growth_failure_random_number = np.random.randint(1, 6)
     patient.growth_failure = test_checker(growth_failure_random_number)
-    genetic_disorders_random_number = numpy.random.randint(1, 21)
+    genetic_disorders_random_number = np.random.randint(1, 21)
     patient.genetic_disorders = test_checker(genetic_disorders_random_number)
-    celiac_mother_random_number = numpy.random.randint(1, 19)
+    celiac_mother_random_number = np.random.randint(1, 19)
     patient.celiac_mother = test_checker(celiac_mother_random_number)
 
 
 def generate_POCT_for_positive_patient(patient):
-    poct_random_number = numpy.random.randint(1, 601)
+    poct_random_number = np.random.randint(1, 601)
     if poct_random_number is 1:
         patient.POCT = constant.INCONCLUSIVE_POCT
     else:
@@ -115,7 +115,7 @@ def create_dataset(num):
         for _ in range(0, num_cycles):
             writer.writerow(generate_positive_patient().values())
             mu, sigma = 100.00, 2.00
-            num_negative_patients = int(numpy.round(numpy.random.normal(mu, sigma)))
+            num_negative_patients = int(np.round(np.random.normal(mu, sigma)))
             for _ in range(0, num_negative_patients):
                 writer.writerow(generate_negative_patient().values())
 
