@@ -1,0 +1,5 @@
+1) Introduzione
+2) Tecniche di riduzione (piccola introduzione di ciascuna tecnica)
+3) Tecniche di rappresentazioni grafiche
+4) Alberi decisionali
+5) Conclusioni
