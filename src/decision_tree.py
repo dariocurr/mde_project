@@ -1,13 +1,15 @@
 import os
 import graphviz
-import squarify
-import pydotplus
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import pydotplus
+import seaborn as sns
+import squarify
 from sklearn import tree
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
+
 dataset_path = "dataset_virtuale.csv"
 
 
@@ -43,30 +45,89 @@ def create_binary_tree(t):
 
 
 def create_treemap(t):
-    data = tree.export_text(t, show_weights=True, spacing=1)
+    string = tree.export_text(t, show_weights=True, spacing=1)
+    feature_label_stack = list()
     labels = list()
     values = list()
-    while data.find("feature") != -1:
-        index_feature = data.find("feature")
-        data = data[index_feature:]
-        space_index = data.find(" ")
-        label = dataset.columns[int(data[8:space_index])]
-        data = data[space_index + 1:]
-        line_index = data.find("|")
-        label += " " + data[0:line_index - 1]
-        data = data[line_index:]
-        if(data.find("weights") < data.find("feature") or data.find("feature") == -1):
-            open_bracket_index = data.find("[")
-            comma_index = data.find(",")
-            close_bracket_index = data.find("]")
-            num1 = float(data[open_bracket_index + 1:comma_index])
-            num2 = float(data[comma_index + 2:close_bracket_index])
-            labels.append(label)
-            values.append(int(num1 + num2))
-    print(str(labels) + " " + str(values))
-    squarify.plot(sizes=values, label=labels, alpha=0.7)
+    while string.find("feature") != -1:
+        string, feature_label = extract_feature_label(string)
+        if(string.find("weights") < string.find("feature") or string.find("feature") == -1):
+            feature_label_stack = clean_feature_label_stack(
+                feature_label_stack, feature_label)
+            label, value = extract_feature_properties(string)
+            labels.append(generate_label(feature_label_stack) +
+                          feature_label + label)
+            values.append(value)
+        else:
+            feature_label_stack.insert(0, feature_label)
+    sorted_labels = list()
+    sizes = list()
+    while len(labels) != 0:
+        maximum = max(values)
+        i = len(labels)
+        while maximum in values:
+            index = values.index(maximum)
+            sorted_labels.append(labels[index][labels[index].find("\n") + 1:])
+            sizes.append(pow(i, 1.6))
+            values.pop(index)
+            labels.pop(index)
+    sns.light_palette((210, 90, 60), input="husl", n_colors=len(sorted_labels))
+    palette.reverse()
+    squarify.plot(sizes=sizes,
+                  label=sorted_labels,
+                  color=palette)
     plt.axis('off')
     plt.show()
+
+
+def extract_feature_label(string):
+    index_feature = string.find("feature")
+    string = string[index_feature:]
+    space_index = string.find(" ")
+    feature_label = "\n" + dataset.columns[int(string[8:space_index])]
+    string = string[space_index + 1:]
+    line_index = string.find("|")
+    feature_label += " " + string[0:line_index - 1]
+    string = string[line_index:]
+    return string, feature_label
+
+
+def extract_feature_properties(string):
+    leaf_label = ""
+    open_bracket_index = string.find("[")
+    comma_index = string.find(",")
+    close_bracket_index = string.find("]")
+    num1 = float(string[open_bracket_index + 1:comma_index])
+    num2 = float(string[comma_index + 2:close_bracket_index])
+    num = int(num1 + num2)
+    string = string[close_bracket_index:]
+    class_index = string.find("class")
+    if string[class_index + 7:class_index + 8] == "0":
+        return "\n" + str(num) + " classificati non celiaco/i", num
+    else:
+        return "\n" + str(num) + " classificati celiaco/i", num
+
+
+def generate_label(feature_label_stack):
+    label = ""
+    feature_label_stack.reverse()
+    for feature_label in feature_label_stack:
+        label += feature_label
+    feature_label_stack.reverse()
+    return label
+
+
+def clean_feature_label_stack(feature_label_stack, feature_label):
+    opposite_feature_label = ""
+    if feature_label.find("<=") != -1:
+        opposite_feature_label = feature_label.replace("<=", "> ")
+    elif feature_label.find(">") != -1:
+        opposite_feature_label = feature_label.replace("> ", "<=")
+    if opposite_feature_label in feature_label_stack:
+        opposite_feature_label_index = feature_label_stack.index(
+            opposite_feature_label)
+        feature_label_stack = feature_label_stack[opposite_feature_label_index + 1:]
+    return feature_label_stack
 
 
 X_train, X_test, Y_train, Y_test, dataset = split_dataset()
