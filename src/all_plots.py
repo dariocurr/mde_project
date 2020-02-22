@@ -125,6 +125,12 @@ def PCA_component_interpretation():
     """
 
 
+def PCA_generate_file(n_params):
+    pca = PCA(n_components=n_params)
+    X_pca = pca.fit_transform(X)
+    np.savetxt("../res/dataset_virtuale_PCA.csv", X_pca, delimiter=",")
+
+
 def kernelPCA_2D():
     # Eseguo il KernelPCA
     kernelPCA = KernelPCA(n_components=2, kernel="sigmoid")
@@ -197,6 +203,12 @@ def kernelPCA_SPLOM(n_params):
     sns.pairplot(dataframe, hue="Class", palette={"Non Celiaco": blue, "Celiaco": yellow}, plot_kws=dict(
         edgecolor=edgecolors, linewidth=linewidth, alpha=alpha))
     plt.show()
+
+
+def kernelPCA_generate_file(n_params):
+    kernelPCA = KernelPCA(n_components=n_params, kernel="sigmoid")
+    X_kernelPCA = kernelPCA.fit_transform(X)
+    np.savetxt("../res/dataset_virtuale_kernelPCA.csv", X_kernelPCA, delimiter=",")
 
 
 def MDS_2D():
@@ -272,6 +284,12 @@ def MDS_SPLOM(n_params):
     plt.show()
 
 
+def MDS_generate_file(n_params):
+    mds = MDS(n_components=3)
+    X_mds = mds.fit_transform(X)
+    np.savetxt("../res/dataset_virtuale_MDS.csv", X_mds, delimiter=",")
+
+
 def tSNE_2D():
     # Eseguo il t-SNE
     tsne = TSNE(n_components=2)
@@ -345,6 +363,12 @@ def tSNE_SPLOM(n_params):
     plt.show()
 
 
+def tSNE_generate_file(n_params):
+    tsne = TSNE(n_components=n_params)
+    X_tsne = tsne.fit_transform(X)
+    np.savetxt("../res/dataset_virtuale_t-SNE.csv", X_tsne, delimiter=",")
+
+
 def scree_plot():
     pca = PCA().fit(X)
     plt.xticks([x for x in range(0, 11)], [x for x in range(1, 12)])
@@ -373,6 +397,7 @@ def sub_menu():
     print("2. 2D (3 dimensioni)")
     print("3. i3D")
     print("4. SPLOM")
+    print("5. Generate file")
     print("0. Exit\n")
     temp = int(input())
     print()
@@ -413,6 +438,14 @@ while c != 0:
                     if(n_params <= 1 or n_params > 12):
                         print("Numero di parametri non ammesso\n")
                 PCA_SPLOM(n_params)
+            elif sc == 5:
+                n_params = -1
+                while(n_params <= 1 or n_params > 12):
+                    print("Numero di parametri: ", end="")
+                    n_params = int(input())
+                    if(n_params <= 1 or n_params > 12):
+                        print("Numero di parametri non ammesso\n")
+                PCA_generate_file(n_params)
             elif c == 0:
                 break
             else:
@@ -432,6 +465,14 @@ while c != 0:
                     if(n_params <= 1 or n_params > 12):
                         print("Numero di parametri non ammesso\n")
                 kernelPCA_SPLOM(n_params)
+            elif sc == 5:
+                n_params = -1
+                while(n_params <= 1 or n_params > 12):
+                    print("Numero di parametri: ", end="")
+                    n_params = int(input())
+                    if(n_params <= 1 or n_params > 12):
+                        print("Numero di parametri non ammesso\n")
+                kernelPCA_generate_file(n_params)
             elif c == 0:
                 break
             else:
@@ -451,6 +492,14 @@ while c != 0:
                     if(n_params <= 1 or n_params > 12):
                         print("Numero di parametri non ammesso\n")
                 MDS_SPLOM(n_params)
+            elif sc == 5:
+                n_params = -1
+                while(n_params <= 1 or n_params > 12):
+                    print("Numero di parametri: ", end="")
+                    n_params = int(input())
+                    if(n_params <= 1 or n_params > 12):
+                        print("Numero di parametri non ammesso\n")
+                MDS_generate_file(n_params)
             elif c == 0:
                 break
             else:
@@ -470,6 +519,14 @@ while c != 0:
                     if(n_params <= 1 or n_params > 3):
                         print("Numero di parametri non ammesso\n")
                 tSNE_SPLOM(n_params)
+            elif sc == 5:
+                n_params = -1
+                while(n_params <= 1 or n_params > 3):
+                    print("Numero di parametri: ", end="")
+                    n_params = int(input())
+                    if(n_params <= 1 or n_params > 3):
+                        print("Numero di parametri non ammesso\n")
+                tSNE_generate_file(n_params)
             elif c == 0:
                 break
             else:
