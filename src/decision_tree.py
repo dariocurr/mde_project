@@ -1,7 +1,4 @@
-import os
-import graphviz
 import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 import pydotplus
 import seaborn as sns
@@ -38,8 +35,10 @@ def decision_tree_classifier(X_train, X_test, Y_train, Y_test, dataset):
 
 
 def create_binary_tree(t):
-    dotfile = tree.export_graphviz(decision_tree=t, class_names=[
-                                   "non celiaco", "celiaco"], feature_names=dataset.columns.drop("Class"), filled=True, rounded=True)
+    dotfile = tree.export_graphviz(decision_tree=t,
+                                   class_names=["non celiaco", "celiaco"],
+                                   feature_names=dataset.columns.drop("Class"),
+                                   filled=True, rounded=True)
     graph = pydotplus.graph_from_dot_data(dotfile)
     graph.write_png("../res/tree_depth.png")
 
@@ -51,12 +50,11 @@ def create_treemap(t):
     values = list()
     while string.find("feature") != -1:
         string, feature_label = extract_feature_label(string)
-        if(string.find("weights") < string.find("feature") or string.find("feature") == -1):
+        if (string.find("weights") < string.find("feature") or string.find("feature") == -1):
             feature_label_stack = clean_feature_label_stack(
                 feature_label_stack, feature_label)
             label, value = extract_feature_properties(string)
-            labels.append(generate_label(feature_label_stack) +
-                          feature_label + label)
+            labels.append(generate_label(feature_label_stack) + feature_label + label)
             values.append(value)
         else:
             feature_label_stack.insert(0, feature_label)
@@ -71,7 +69,9 @@ def create_treemap(t):
             sizes.append(pow(i, 1.6))
             values.pop(index)
             labels.pop(index)
-    sns.light_palette((210, 90, 60), input="husl", n_colors=len(sorted_labels))
+    palette = sns.light_palette(color=(210, 90, 60),
+                                input="husl",
+                                n_colors=len(sorted_labels))
     palette.reverse()
     squarify.plot(sizes=sizes,
                   label=sorted_labels,
@@ -93,7 +93,6 @@ def extract_feature_label(string):
 
 
 def extract_feature_properties(string):
-    leaf_label = ""
     open_bracket_index = string.find("[")
     comma_index = string.find(",")
     close_bracket_index = string.find("]")

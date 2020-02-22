@@ -38,8 +38,8 @@ def PCA_2D():
     pca = PCA(n_components=2)
     X_pca = pca.fit_transform(X)
     # Plot 2D
-    plt.scatter(X_pca[:,0], X_pca[:,1], c=colormap[Y], alpha=alpha, edgecolors=edgecolors, linewidth=linewidth)
-    plt.legend(handles=[pop_a,pop_b], loc='upper right')
+    plt.scatter(X_pca[:, 0], X_pca[:, 1], c=colormap[Y], alpha=alpha, edgecolors=edgecolors, linewidth=linewidth)
+    plt.legend(handles=[pop_a, pop_b], loc='upper right')
     plt.title("PCA con n = 2 componenti")
     plt.xlabel("Prima componente principale")
     plt.ylabel("Seconda componente principale")
@@ -50,18 +50,18 @@ def PCA_2D_with_size():
     # Eseguo la PCA
     pca = PCA(n_components=3)
     X_pca = pca.fit_transform(X)
-    minimum = min(X_pca[:,2])
-    maximum = max(X_pca[:,2])
+    maximum = max(X_pca[:, 2])
     for i in range(len(X_pca)):
         jittered_x = np.random.rand() * 2 - 1
         X_pca[i][0] += jittered_x
         jittered_y = np.random.rand() * 1 - 0.50
         X_pca[i][1] += jittered_y
-        X_pca[i][2] += abs(2 * min(X_pca[:,2]))
+        X_pca[i][2] += abs(2 * min(X_pca[:, 2]))
         X_pca[i][2] *= (300 / maximum)
     # Plot 2D
-    plt.scatter(X_pca[:,0], X_pca[:,1], s=X_pca[:,2], c=colormap[Y], alpha=alpha, edgecolors=edgecolors, linewidth=linewidth)
-    plt.legend(handles=[pop_a,pop_b], loc='upper right')
+    plt.scatter(X_pca[:, 0], X_pca[:, 1], s=X_pca[:, 2], c=colormap[Y],
+                alpha=alpha, edgecolors=edgecolors, linewidth=linewidth)
+    plt.legend(handles=[pop_a, pop_b], loc='upper right')
     plt.title("PCA con n = 3 componenti")
     plt.xlabel("Prima componente principale")
     plt.ylabel("Seconda componente principale")
@@ -75,8 +75,9 @@ def PCA_i3D():
     # Plot 3D
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    ax.scatter(X_pca[:,0], X_pca[:,1], X_pca[:,2], c=colormap[Y], marker='o', alpha=alpha, edgecolors=edgecolors, linewidth=linewidth)
-    plt.legend(handles=[pop_a,pop_b], loc='upper right')
+    ax.scatter(X_pca[:, 0], X_pca[:, 1], X_pca[:, 2], c=colormap[Y], marker='o',
+               alpha=alpha, edgecolors=edgecolors, linewidth=linewidth)
+    plt.legend(handles=[pop_a, pop_b], loc='upper right')
     plt.title("PCA con n = 3 componenti")
     ax.set_xlabel("Prima componente principale")
     ax.set_ylabel("Seconda componente principale")
@@ -91,7 +92,7 @@ def PCA_SPLOM(n_params):
     # Creo il dizionario dei componenti
     components = {}
     for i in range(n_params):
-        components.update({'Componente{0}'.format(i+1) : X_pca[:,i]})
+        components.update({'Componente{0}'.format(i + 1): X_pca[:, i]})
     # Converto il numpy array in un dataframe
     dataframe = pd.DataFrame(components)
     dataframe["Class"] = Y
@@ -99,7 +100,8 @@ def PCA_SPLOM(n_params):
     dataframe["Class"].replace(to_replace=1, value="Celiaco", inplace=True)
     # SPLOM plot
     sns.set(style="ticks")
-    sns.pairplot(dataframe, hue="Class", palette={"Non Celiaco": blue, "Celiaco": yellow}, plot_kws=dict(edgecolor=edgecolors, linewidth=linewidth, alpha=alpha))
+    sns.pairplot(dataframe, hue="Class", palette={"Non Celiaco": blue, "Celiaco": yellow}, plot_kws=dict(
+        edgecolor=edgecolors, linewidth=linewidth, alpha=alpha))
     plt.show()
 
 
@@ -128,8 +130,9 @@ def kernelPCA_2D():
     kernelPCA = KernelPCA(n_components=2, kernel="sigmoid")
     X_kernelPCA = kernelPCA.fit_transform(X)
     # Plot 2D
-    plt.scatter(X_kernelPCA[:,0], X_kernelPCA[:,1], c=colormap[Y], alpha=alpha, edgecolors=edgecolors, linewidth=linewidth)
-    plt.legend(handles=[pop_a,pop_b], loc='upper right')
+    plt.scatter(X_kernelPCA[:, 0], X_kernelPCA[:, 1], c=colormap[Y],
+                alpha=alpha, edgecolors=edgecolors, linewidth=linewidth)
+    plt.legend(handles=[pop_a, pop_b], loc='upper right')
     plt.title("kernelPCA con n = 2 componenti")
     plt.xlabel("Prima componente principale")
     plt.ylabel("Seconda componente principale")
@@ -140,18 +143,19 @@ def kernelPCA_2D_with_size():
     # Eseguo la t-SNE
     kernelPCA = KernelPCA(n_components=3, kernel='sigmoid')
     X_kernelPCA = kernelPCA.fit_transform(X)
-    minimum = min(X_kernelPCA[:,2])
-    maximum = max(X_kernelPCA[:,2])
+    minimum = min(X_kernelPCA[:, 2])
+    maximum = max(X_kernelPCA[:, 2])
     for i in range(len(X_kernelPCA)):
         jittered_x = np.random.rand()
         X_kernelPCA[i][0] += jittered_x
         jittered_y = np.random.rand()
         X_kernelPCA[i][1] += jittered_y
-        X_kernelPCA[i][2] += abs( 2 * minimum)
+        X_kernelPCA[i][2] += abs(2 * minimum)
         X_kernelPCA[i][2] *= (300 / maximum)
     # Plot 2D
-    plt.scatter(X_kernelPCA[:,0], X_kernelPCA[:,1], s=X_kernelPCA[:,2], c=colormap[Y], alpha=alpha, edgecolors=edgecolors, linewidth=linewidth)
-    plt.legend(handles=[pop_a,pop_b], loc='upper right')
+    plt.scatter(X_kernelPCA[:, 0], X_kernelPCA[:, 1], s=X_kernelPCA[:, 2],
+                c=colormap[Y], alpha=alpha, edgecolors=edgecolors, linewidth=linewidth)
+    plt.legend(handles=[pop_a, pop_b], loc='upper right')
     plt.title("kernelPCA con n = 3 componenti")
     plt.xlabel("Prima componente principale")
     plt.ylabel("Seconda componente principale")
@@ -165,8 +169,9 @@ def kernelPCA_i3D():
     # Plot 3D
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    ax.scatter(X_kernelPCA[:,0], X_kernelPCA[:,1], X_kernelPCA[:,2], c=colormap[Y], marker='o', alpha=alpha, edgecolors=edgecolors, linewidth=linewidth)
-    plt.legend(handles=[pop_a,pop_b], loc='upper right')
+    ax.scatter(X_kernelPCA[:, 0], X_kernelPCA[:, 1], X_kernelPCA[:, 2], c=colormap[Y],
+               marker='o', alpha=alpha, edgecolors=edgecolors, linewidth=linewidth)
+    plt.legend(handles=[pop_a, pop_b], loc='upper right')
     plt.title("kernelPCA con n = 3 componenti")
     ax.set_xlabel("Prima componente principale")
     ax.set_ylabel("Seconda componente principale")
@@ -181,7 +186,7 @@ def kernelPCA_SPLOM(n_params):
     # Creo il dizionario dei componenti
     components = {}
     for i in range(n_params):
-        components.update({'Componente{0}'.format(i+1) : X_kernelPCA[:,i]})
+        components.update({'Componente{0}'.format(i + 1): X_kernelPCA[:, i]})
     # Converto il numpy array in un dataframe
     dataframe = pd.DataFrame(components)
     dataframe["Class"] = Y
@@ -189,7 +194,8 @@ def kernelPCA_SPLOM(n_params):
     dataframe["Class"].replace(to_replace=1, value="Celiaco", inplace=True)
     # SPLOM plot
     sns.set(style="ticks")
-    sns.pairplot(dataframe, hue="Class", palette={"Non Celiaco": blue, "Celiaco": yellow}, plot_kws=dict(edgecolor=edgecolors, linewidth=linewidth, alpha=alpha))
+    sns.pairplot(dataframe, hue="Class", palette={"Non Celiaco": blue, "Celiaco": yellow}, plot_kws=dict(
+        edgecolor=edgecolors, linewidth=linewidth, alpha=alpha))
     plt.show()
 
 
@@ -198,8 +204,8 @@ def MDS_2D():
     mds = MDS(n_components=2)
     X_mds = mds.fit_transform(X)
     # Plot 2D
-    plt.scatter(X_mds[:,0], X_mds[:,1], c=colormap[Y], alpha=alpha, edgecolors=edgecolors, linewidth=linewidth)
-    plt.legend(handles=[pop_a,pop_b], loc='upper right')
+    plt.scatter(X_mds[:, 0], X_mds[:, 1], c=colormap[Y], alpha=alpha, edgecolors=edgecolors, linewidth=linewidth)
+    plt.legend(handles=[pop_a, pop_b], loc='upper right')
     plt.title("MDS con n = 2 componenti")
     plt.xlabel("Coordinata X")
     plt.ylabel("Coordinata Y")
@@ -210,18 +216,19 @@ def MDS_2D_with_size():
     # Eseguo la MDS
     mds = MDS(n_components=3)
     X_mds = mds.fit_transform(X)
-    minimum = min(X_mds[:,2])
-    maximum = max(X_mds[:,2])
+    minimum = min(X_mds[:, 2])
+    maximum = max(X_mds[:, 2])
     for i in range(len(X_mds)):
         jittered_x = np.random.rand()
         X_mds[i][0] += jittered_x
         jittered_y = np.random.rand()
         X_mds[i][1] += jittered_y
-        X_mds[i][2] += abs( 2 * minimum)
+        X_mds[i][2] += abs(2 * minimum)
         X_mds[i][2] *= (300 / maximum)
     # Plot 2D
-    plt.scatter(X_mds[:,0], X_mds[:,1], s=X_mds[:,2], c=colormap[Y], alpha=0.5, edgecolors=edgecolors, linewidth=linewidth)
-    plt.legend(handles=[pop_a,pop_b], loc='upper right')
+    plt.scatter(X_mds[:, 0], X_mds[:, 1], s=X_mds[:, 2], c=colormap[Y],
+                alpha=0.5, edgecolors=edgecolors, linewidth=linewidth)
+    plt.legend(handles=[pop_a, pop_b], loc='upper right')
     plt.title("MDS con n = 3 componenti")
     plt.xlabel("Coordinata X")
     plt.ylabel("Coordinata Y")
@@ -235,8 +242,9 @@ def MDS_i3D():
     # Plot 3D
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    ax.scatter(X_mds[:,0], X_mds[:,1], X_mds[:,2], c=colormap[Y], marker='o', alpha=alpha, edgecolors=edgecolors, linewidth=linewidth)
-    plt.legend(handles=[pop_a,pop_b], loc='upper right')
+    ax.scatter(X_mds[:, 0], X_mds[:, 1], X_mds[:, 2], c=colormap[Y], marker='o',
+               alpha=alpha, edgecolors=edgecolors, linewidth=linewidth)
+    plt.legend(handles=[pop_a, pop_b], loc='upper right')
     plt.title("MDS con n = 3 componenti")
     ax.set_xlabel("Coordinata X")
     ax.set_ylabel("Coordinata Y")
@@ -251,7 +259,7 @@ def MDS_SPLOM(n_params):
     # Creo il dizionario dei componenti
     components = {}
     for i in range(n_params):
-        components.update({'Componente{0}'.format(i+1) : X_mds[:,i]})
+        components.update({'Componente{0}'.format(i + 1): X_mds[:, i]})
     # Converto il numpy array in un dataframe
     dataframe = pd.DataFrame(components)
     dataframe["Class"] = Y
@@ -259,7 +267,8 @@ def MDS_SPLOM(n_params):
     dataframe["Class"].replace(to_replace=1, value="Celiaco", inplace=True)
     # SPLOM plot
     sns.set(style="ticks")
-    sns.pairplot(dataframe, hue="Class", palette={"Non Celiaco": blue, "Celiaco": yellow}, plot_kws=dict(edgecolor=edgecolors, linewidth=linewidth, alpha=alpha))
+    sns.pairplot(dataframe, hue="Class", palette={"Non Celiaco": blue, "Celiaco": yellow}, plot_kws=dict(
+        edgecolor=edgecolors, linewidth=linewidth, alpha=alpha))
     plt.show()
 
 
@@ -268,8 +277,8 @@ def tSNE_2D():
     tsne = TSNE(n_components=2)
     X_tsne = tsne.fit_transform(X)
     # Plot 2D
-    plt.scatter(X_tsne[:,0], X_tsne[:,1], c=colormap[Y], alpha=alpha, edgecolors=edgecolors, linewidth=linewidth)
-    plt.legend(handles=[pop_a,pop_b], loc='upper right')
+    plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=colormap[Y], alpha=alpha, edgecolors=edgecolors, linewidth=linewidth)
+    plt.legend(handles=[pop_a, pop_b], loc='upper right')
     plt.title("t-SNE con n = 2 componenti")
     plt.xlabel("Prima Componente")
     plt.ylabel("Seconda Componente")
@@ -280,18 +289,19 @@ def tSNE_2D_with_size():
     # Eseguo la t-SNE
     tsne = TSNE(n_components=3)
     X_tsne = tsne.fit_transform(X)
-    minimum = min(X_tsne[:,2])
-    maximum = max(X_tsne[:,2])
+    minimum = min(X_tsne[:, 2])
+    maximum = max(X_tsne[:, 2])
     for i in range(len(X_tsne)):
         jittered_x = np.random.rand()
         X_tsne[i][0] += jittered_x
         jittered_y = np.random.rand()
         X_tsne[i][1] += jittered_y
-        X_tsne[i][2] += abs( 2 * minimum)
+        X_tsne[i][2] += abs(2 * minimum)
         X_tsne[i][2] *= (300 / maximum)
     # Plot 2D
-    plt.scatter(X_tsne[:,0], X_tsne[:,1], s=X_tsne[:,2], c=colormap[Y], alpha=alpha, edgecolors=edgecolors, linewidth=linewidth)
-    plt.legend(handles=[pop_a,pop_b], loc='upper right')
+    plt.scatter(X_tsne[:, 0], X_tsne[:, 1], s=X_tsne[:, 2], c=colormap[Y],
+                alpha=alpha, edgecolors=edgecolors, linewidth=linewidth)
+    plt.legend(handles=[pop_a, pop_b], loc='upper right')
     plt.title("t-SNE con n = 3 componenti")
     plt.xlabel("Prima Componente")
     plt.ylabel("Seconda Componente")
@@ -305,8 +315,9 @@ def tSNE_i3D():
     # Plot 3D
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    ax.scatter(X_tsne[:,0], X_tsne[:,1], X_tsne[:,2], c=colormap[Y], marker='o', alpha=alpha, edgecolors=edgecolors, linewidth=linewidth)
-    plt.legend(handles=[pop_a,pop_b], loc='upper right')
+    ax.scatter(X_tsne[:, 0], X_tsne[:, 1], X_tsne[:, 2], c=colormap[Y],
+               marker='o', alpha=alpha, edgecolors=edgecolors, linewidth=linewidth)
+    plt.legend(handles=[pop_a, pop_b], loc='upper right')
     plt.title("t-SNE con n = 3 componenti")
     ax.set_xlabel("Prima Componente")
     ax.set_ylabel("Seconda Componente")
@@ -321,7 +332,7 @@ def tSNE_SPLOM(n_params):
     # Creo il dizionario dei componenti
     components = {}
     for i in range(n_params):
-        components.update({'Componente{0}'.format(i+1) : X_tsne[:,i]})
+        components.update({'Componente{0}'.format(i + 1): X_tsne[:, i]})
     # Converto il numpy array in un dataframe
     dataframe = pd.DataFrame(components)
     dataframe["Class"] = Y
@@ -329,7 +340,8 @@ def tSNE_SPLOM(n_params):
     dataframe["Class"].replace(to_replace=1, value="Celiaco", inplace=True)
     # SPLOM plot
     sns.set(style="ticks")
-    sns.pairplot(dataframe, hue="Class", palette={"Non Celiaco": blue, "Celiaco": yellow}, plot_kws=dict(edgecolor=edgecolors, linewidth=linewidth, alpha=alpha))
+    sns.pairplot(dataframe, hue="Class", palette={"Non Celiaco": blue, "Celiaco": yellow}, plot_kws=dict(
+        edgecolor=edgecolors, linewidth=linewidth, alpha=alpha))
     plt.show()
 
 
