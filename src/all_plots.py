@@ -416,7 +416,7 @@ while c != 0:
             elif c == 0:
                 break
             else:
-                print("Unknown command")
+                print("Comando sconosciuto")
         elif c == 2:
             if sc == 1:
                 kernelPCA_2D()
@@ -435,7 +435,7 @@ while c != 0:
             elif c == 0:
                 break
             else:
-                print("Unknown command")
+                print("Comando sconosciuto")
         elif c == 3:
             if sc == 1:
                 MDS_2D()
@@ -454,7 +454,7 @@ while c != 0:
             elif c == 0:
                 break
             else:
-                print("Unknown command")
+                print("Comando sconosciuto")
         elif c == 4:
             if sc == 1:
                 tSNE_2D()
@@ -473,6 +473,6 @@ while c != 0:
             elif c == 0:
                 break
             else:
-                print("Unknown command")
+                print("Comando sconosciuto")
     else:
-        print("Unknown command")
+        print("Comando sconosciuto")
