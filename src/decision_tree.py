@@ -40,7 +40,7 @@ def create_binary_tree(t):
                                    feature_names=dataset.columns.drop("Class"),
                                    filled=True, rounded=True)
     graph = pydotplus.graph_from_dot_data(dotfile)
-    graph.write_png("../res/tree_depth.png")
+    graph.write_png("../res/decision_tree.png")
 
 
 def create_treemap(t):
