@@ -13,7 +13,7 @@ from sklearn.manifold import TSNE
 pd.set_option('display.width', 999)
 
 
-dataset_path = "dataset_virtuale.csv"
+dataset_path = "../res/dataset_virtuale.csv"
 
 
 def initDataframe():

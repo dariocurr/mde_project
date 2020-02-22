@@ -7,7 +7,7 @@ from sklearn import tree
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 
-dataset_path = "dataset_virtuale.csv"
+dataset_path = "../res/dataset_virtuale.csv"
 
 
 def split_dataset():
