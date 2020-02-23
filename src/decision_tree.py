@@ -50,9 +50,8 @@ def create_treemap(t):
     values = list()
     while string.find("feature") != -1:
         string, feature_label = extract_feature_label(string)
-        if (string.find("weights") < string.find("feature") or string.find("feature") == -1):
-            feature_label_stack = clean_feature_label_stack(
-                feature_label_stack, feature_label)
+        feature_label_stack = clean_feature_label_stack(feature_label_stack, feature_label)
+        if (string.find("weights") < string.find("feature")) or (string.find("feature") == -1):
             label, value = extract_feature_properties(string)
             labels.append(generate_label(feature_label_stack) + feature_label + label)
             values.append(value)
@@ -123,11 +122,9 @@ def clean_feature_label_stack(feature_label_stack, feature_label):
     elif feature_label.find(">") != -1:
         opposite_feature_label = feature_label.replace("> ", "<=")
     if opposite_feature_label in feature_label_stack:
-        opposite_feature_label_index = feature_label_stack.index(
-            opposite_feature_label)
+        opposite_feature_label_index = feature_label_stack.index(opposite_feature_label)
         feature_label_stack = feature_label_stack[opposite_feature_label_index + 1:]
     return feature_label_stack
-
 
 X_train, X_test, Y_train, Y_test, dataset = split_dataset()
 decision_tree_classifier(X_train, X_test, Y_train, Y_test, dataset)

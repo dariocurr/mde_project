@@ -127,8 +127,10 @@ def PCA_component_interpretation():
 
 def PCA_generate_file(n_params):
     pca = PCA(n_components=n_params)
-    X_pca = pca.fit_transform(X)
-    np.savetxt("../res/dataset_virtuale_PCA.csv", X_pca, delimiter=",")
+    X_PCA = pca.fit_transform(X)
+    X_PCA = pd.DataFrame(data=X_PCA, columns=["Componente" + str(i) for i in range(1, len(X_PCA[0]) + 1)])
+    X_PCA["Class"] = Y["Class"]
+    X_PCA.to_csv("../res/dataset_virtuale_PCA.csv", index=False)
 
 
 def kernelPCA_2D():
@@ -208,7 +210,9 @@ def kernelPCA_SPLOM(n_params):
 def kernelPCA_generate_file(n_params):
     kernelPCA = KernelPCA(n_components=n_params, kernel="sigmoid")
     X_kernelPCA = kernelPCA.fit_transform(X)
-    np.savetxt("../res/dataset_virtuale_kernelPCA.csv", X_kernelPCA, delimiter=",")
+    X_kernelPCA = pd.DataFrame(data=X_kernelPCA, columns=["Componente" + str(i) for i in range(1, len(X_kernelPCA[0]) + 1)])
+    X_kernelPCA["Class"] = Y["Class"]
+    X_kernelPCA.to_csv("../res/dataset_virtuale_kernelPCA.csv", index=False)
 
 
 def MDS_2D():
@@ -286,8 +290,10 @@ def MDS_SPLOM(n_params):
 
 def MDS_generate_file(n_params):
     mds = MDS(n_components=3)
-    X_mds = mds.fit_transform(X)
-    np.savetxt("../res/dataset_virtuale_MDS.csv", X_mds, delimiter=",")
+    X_MDS = mds.fit_transform(X)
+    X_MDS = pd.DataFrame(data=X_MDS, columns=["Componente" + str(i) for i in range(1, len(X_MDS[0]) + 1)])
+    X_MDS["Class"] = Y["Class"]
+    X_MDS.to_csv("../res/dataset_virtuale_MDS.csv", index=False)
 
 
 def tSNE_2D():
@@ -365,8 +371,10 @@ def tSNE_SPLOM(n_params):
 
 def tSNE_generate_file(n_params):
     tsne = TSNE(n_components=n_params)
-    X_tsne = tsne.fit_transform(X)
-    np.savetxt("../res/dataset_virtuale_t-SNE.csv", X_tsne, delimiter=",")
+    X_tSNE = tsne.fit_transform(X)
+    X_tSNE = pd.DataFrame(data=X_tSNE, columns=["Componente" + str(i) for i in range(1, len(X_tSNE[0]) + 1)])
+    X_tSNE["Class"] = Y["Class"]
+    X_tSNE.to_csv("../res/dataset_virtuale_tSNE.csv", index=False)
 
 
 def scree_plot():
