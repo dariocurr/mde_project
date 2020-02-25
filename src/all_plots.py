@@ -43,7 +43,7 @@ def PCA_2D():
     plt.title("PCA con n = 2 componenti")
     plt.xlabel("Prima componente principale")
     plt.ylabel("Seconda componente principale")
-    plt.show()
+    plt.savefig("../Articolo/img/PCA_2D.png")
 
 
 def PCA_2D_with_size():
@@ -65,7 +65,7 @@ def PCA_2D_with_size():
     plt.title("PCA con n = 3 componenti")
     plt.xlabel("Prima componente principale")
     plt.ylabel("Seconda componente principale")
-    plt.show()
+    plt.savefig("../Articolo/img/PCA_2D_with_size.png")
 
 
 def PCA_i3D():
@@ -82,7 +82,7 @@ def PCA_i3D():
     ax.set_xlabel("Prima componente principale")
     ax.set_ylabel("Seconda componente principale")
     ax.set_zlabel("Terza componente principale")
-    plt.show()
+    plt.savefig("../Articolo/img/PCA_i3D.png")
 
 
 def PCA_SPLOM(n_params):
@@ -102,7 +102,7 @@ def PCA_SPLOM(n_params):
     sns.set(style="ticks")
     sns.pairplot(dataframe, hue="Class", palette={"Non Celiaco": blue, "Celiaco": yellow}, plot_kws=dict(
         edgecolor=edgecolors, linewidth=linewidth, alpha=alpha))
-    plt.show()
+    plt.savefig("../Articolo/img/PCA_SPLOM.png")
 
 
 def PCA_component_interpretation():
@@ -121,7 +121,7 @@ def PCA_component_interpretation():
     for i in range(0, len(components)):
         plt.scatter(components.iat[i, 0], components.iat[i, 1], marker='None')
         plt.text(components.iat[i, 0], components.iat[i, 1], features[i])
-    plt.show()
+    plt.savefig("../res/")
     """
 
 
@@ -144,7 +144,7 @@ def kernelPCA_2D():
     plt.title("kernelPCA con n = 2 componenti")
     plt.xlabel("Prima componente principale")
     plt.ylabel("Seconda componente principale")
-    plt.show()
+    plt.savefig("../Articolo/img/kernelPCA_2D.png")
 
 
 def kernelPCA_2D_with_size():
@@ -167,7 +167,7 @@ def kernelPCA_2D_with_size():
     plt.title("kernelPCA con n = 3 componenti")
     plt.xlabel("Prima componente principale")
     plt.ylabel("Seconda componente principale")
-    plt.show()
+    plt.savefig("../Articolo/img/kernelPCA_2D_with_size.png")
 
 
 def kernelPCA_i3D():
@@ -184,7 +184,7 @@ def kernelPCA_i3D():
     ax.set_xlabel("Prima componente principale")
     ax.set_ylabel("Seconda componente principale")
     ax.set_zlabel("Terza componente principale")
-    plt.show()
+    plt.savefig("../Articolo/img/kernelPCA_i3D.png")
 
 
 def kernelPCA_SPLOM(n_params):
@@ -204,7 +204,7 @@ def kernelPCA_SPLOM(n_params):
     sns.set(style="ticks")
     sns.pairplot(dataframe, hue="Class", palette={"Non Celiaco": blue, "Celiaco": yellow}, plot_kws=dict(
         edgecolor=edgecolors, linewidth=linewidth, alpha=alpha))
-    plt.show()
+    plt.savefig("../Articolo/img/kernelPCA_SPLOM.png")
 
 
 def kernelPCA_generate_file(n_params):
@@ -225,7 +225,7 @@ def MDS_2D():
     plt.title("MDS con n = 2 componenti")
     plt.xlabel("Coordinata X")
     plt.ylabel("Coordinata Y")
-    plt.show()
+    plt.savefig("../Articolo/img/MDS_2D.png")
 
 
 def MDS_2D_with_size():
@@ -248,7 +248,7 @@ def MDS_2D_with_size():
     plt.title("MDS con n = 3 componenti")
     plt.xlabel("Coordinata X")
     plt.ylabel("Coordinata Y")
-    plt.show()
+    plt.savefig("../Articolo/img/MDS_2D_with_size.png")
 
 
 def MDS_i3D():
@@ -265,7 +265,7 @@ def MDS_i3D():
     ax.set_xlabel("Coordinata X")
     ax.set_ylabel("Coordinata Y")
     ax.set_zlabel("Coordinata Z")
-    plt.show()
+    plt.savefig("../Articolo/img/MDS_i3D.png")
 
 
 def MDS_SPLOM(n_params):
@@ -285,7 +285,7 @@ def MDS_SPLOM(n_params):
     sns.set(style="ticks")
     sns.pairplot(dataframe, hue="Class", palette={"Non Celiaco": blue, "Celiaco": yellow}, plot_kws=dict(
         edgecolor=edgecolors, linewidth=linewidth, alpha=alpha))
-    plt.show()
+    plt.savefig("../Articolo/img/MDS_SPLOM.png")
 
 
 def MDS_generate_file(n_params):
@@ -306,7 +306,7 @@ def tSNE_2D():
     plt.title("t-SNE con n = 2 componenti")
     plt.xlabel("Prima Componente")
     plt.ylabel("Seconda Componente")
-    plt.show()
+    plt.savefig("../Articolo/img/tSNE_2D.png")
 
 
 def tSNE_2D_with_size():
@@ -329,7 +329,7 @@ def tSNE_2D_with_size():
     plt.title("t-SNE con n = 3 componenti")
     plt.xlabel("Prima Componente")
     plt.ylabel("Seconda Componente")
-    plt.show()
+    plt.savefig("../Articolo/img/tSNE_2D_with_size.png")
 
 
 def tSNE_i3D():
@@ -346,7 +346,7 @@ def tSNE_i3D():
     ax.set_xlabel("Prima Componente")
     ax.set_ylabel("Seconda Componente")
     ax.set_zlabel("Terza Componente")
-    plt.show()
+    plt.savefig("../Articolo/img/tSNE_i3D.png")
 
 
 def tSNE_SPLOM(n_params):
@@ -366,7 +366,7 @@ def tSNE_SPLOM(n_params):
     sns.set(style="ticks")
     sns.pairplot(dataframe, hue="Class", palette={"Non Celiaco": blue, "Celiaco": yellow}, plot_kws=dict(
         edgecolor=edgecolors, linewidth=linewidth, alpha=alpha))
-    plt.show()
+    plt.savefig("../Articolo/img/tSNE_SPLOM.png")
 
 
 def tSNE_generate_file(n_params):
@@ -383,7 +383,7 @@ def scree_plot():
     plt.plot(pca.explained_variance_ratio_)
     plt.xlabel("Numero di componenti")
     plt.ylabel("Autovalore")
-    plt.show()
+    plt.savefig("../Articolo/img/scree_plot.png")
 
 
 def menu():
