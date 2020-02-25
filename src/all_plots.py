@@ -116,13 +116,7 @@ def PCA_components_interpretation():
         rows[i] = "PCA" + str(i + 1)
         columns[i] = features[i]
     components.rename(index=rows, columns=columns, inplace=True)
-    print(components.transpose())
-    """
-    for i in range(0, len(components)):
-        plt.scatter(components.iat[i, 0], components.iat[i, 1], marker='None')
-        plt.text(components.iat[i, 0], components.iat[i, 1], features[i])
-    plt.savefig("../res/")
-    """
+    print(pd.DataFrame(components.transpose()))
 
 
 def PCA_generate_file(n_params):

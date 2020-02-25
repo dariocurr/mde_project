@@ -94,7 +94,7 @@ dove $ N $ è in numero di punti dell'insieme, $\lambda$ e $a$ sono rispettivame
 Tecnica esplorativa dei dati che ci consente di ottenere una rappresentazione di $n$ oggetti in $k$ dimensioni partendo da delle informazioni inerenti la similarità (o dissimilarità) tra  ciascuna coppia di oggetti. Iniziamo con il considerare le distanze $ \delta_{ij} $ tra ogni coppia degli $n$ punti $x_1 \cdots x_n$. A partire da queste ultime può essere costruita una matrice $\Delta$ $n \times n$:
 \begin{equation}
 \nonumber
-\Delta=\begin{bmatrix} 
+\Delta=\begin{bmatrix}
 0 \\
 \delta_{21} &&\\
 \vdots & \ddots\\
@@ -104,8 +104,8 @@ Tecnica esplorativa dei dati che ci consente di ottenere una rappresentazione di
 Chiamiamo $d_{ij}$ le distanze tra le loro immagini $ y_{1},\cdots,y_{n}$ nello spazio di dimensione $k$ $d_{ij}=\lvert\lvert{y_i-y_j}\lvert\lvert$. Le componenti di $y_i$ nello spazio di arrivo sono $y_{11},y_{12},\cdots,y_{1k}$ e possono essere rappresentati dalla matrice che segue:
 \begin{equation}
 \nonumber
-A = \begin{bmatrix} 
-y_{11}           & \dots         & y_{1k}         \\ 
+A = \begin{bmatrix}
+y_{11}           & \dots         & y_{1k}         \\
 \vdots   &  \ddots    & \vdots \\
 y_{n1}          & \dots         & y_{nk}         \\
 \end{bmatrix}
@@ -143,14 +143,14 @@ L'uso della divergenza di Kullback-Leibler come funzione obiettivo consente di a
 \begin{flushleft}
 	L'analisi esplorativa dei dati è un'operazione finalizzata ad ottenere, per mezzo di rappresentazioni visuali, quanta più informazione possibile riguardo al problema in esame in un dataset.
 	Per stabilire l'efficienza delle quattro tecniche di riduzione dimensionale - descritte in \emph{Sezione 2} - nell'individuare le correlazioni tra le componenti del dataset "nome dataset", sono state utilizzate quattro diverse tecniche di visualizzazione:
-	
+
 	\begin{itemize}
 		\item scatterplot 2D per dati bidimensionali
 		\item scatterplot 2D per dati tridimensionali
 		\item scatterplot 3D interattivo
 		\item plot di Draftman
 	\end{itemize}
-	
+
 	Lo scatterplot 2D per dati bidimensionali è una tecnica di visualizzazione per la rappresentazione su un piano cartesiano dei record di un dataset. In particolare, negli assi X ed Y vengono rappresentate le due componenti del dataset con la più alta varianza, calcolate dalla tecnica di riduzione dimensionale di riferimento. \\
 	Per l'aggiunta di una terza dimensione nello scatterplot 2D, viene associato ad ogni data point del piano un attributo - lo spazio - il cui valore è in relazione con la terza componente. \\
 	Lo scatterplot 3D interattivo è un'altra tecnica per la rappresentazione dei data point del dataset ridotto a tre componenti su un piano cartesiano. In questa tipologia di visualizzazione, la terza componente è rappresentata dall'asse Z. \\
@@ -159,33 +159,33 @@ L'uso della divergenza di Kullback-Leibler come funzione obiettivo consente di a
 
 \begin{flushleft}
 	Per stabilire il numero di componenti ottimale del nostro dataset ridotto è stato creato uno scree-plot, un grafico i cui valori dell'asse delle ascisse corrispondono al numero delle componenti ed i valori dell'asse delle ordinate agli autovalori.
-	
+
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.4\textwidth]{img/scree_plot.png}
-		\caption{scree plot del dataset Celiachion}		
+		\caption{scree plot del dataset Celiachion}
 	\end{figure}
-	
+
 	La \emph{Figura 1} mostra lo scree-plot applicato al nostro dataset, che indicherebbe come migliore scelta un numero di componenti pari a 2 o 9, dal momento che è presente un "gomito netto" in corrispondenza di questi valori.
 \end{flushleft}
 
 \begin{flushleft}
-	
+
 	\subsection{PCA}
-			
+
 	La \emph{Figura 2} mostra lo scatterplot 2D bidimensionale dopo aver ridotto il nostro dataset con due componenti per mezzo della tecnica di riduzione PCA. \\
-	
+
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.4\textwidth]{img/PCA_2Dnc2.png}
-		\caption{scatterplot 2D bidimensionale applicato su PCA}		
+		\caption{scatterplot 2D bidimensionale applicato su PCA}
 	\end{figure}
-	
+
 	 L'uso dei colori - blu per la classe \emph{non celiaco} e giallo per la classe \emph{celiaco} - è un'ulteriore informazione che abbiamo voluto aggiungere per verificare la veridicità della separabilità di ciascuna tecnica di riduzione. \\
 	 Dalla \emph{Figura 2} si evince che il PCA - con un numero di componenti principali pari a due - riesce a mantenere una buona separabilità dei data point, ad eccezione fatta per quelli centrali, i quali potrebbero essere facilmente fraintesi. \\
-		
+
  	 Una situazione simile a quella di \emph{Figura 2} è evidente in \emph{Figura 3}, che mostra lo scatterplot 2D a seguito della riduzione della dimensionalità del dataset a tre componenti per mezzo della PCA. \\
-	
+
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.4\textwidth]{img/PCA_2Dnc3.png}
@@ -193,110 +193,110 @@ L'uso della divergenza di Kullback-Leibler come funzione obiettivo consente di a
 	\end{figure}
 
 	Ben evidente è la separabilità dei data point presenti nello scatterplot 3D interattivo, come visibile in \emph{Figura 4}. \\
-	
+
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.4\textwidth]{img/PCA_i3D.png}
 		\caption{scatterplot 3D interattivo applicato su PCA}
 	\end{figure}
-	
+
 	Infine, la \emph{Figura 5} mostra il plot di Draftman applicato al dataset ridotto a 9 componenti per mezzo della tecnica PCA.
-	
+
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.4\textwidth]{img/PCA_SPLOM.png}
 		\caption{plot di Draftman applicato su PCA}
 	\end{figure}
-	
+
 	Da tale rappresentazione è possibile notare come la Componente 1, se messo in relazione con tutte le altre componenti della matrice, riesca a mantenere la migliore separabilità.
 \end{flushleft}
 
 \begin{flushleft}
-	
+
 	\subsection{kernelPCA}
-	
+
 	In \emph{Figura 6} viene raffigurato lo scatterplot 2D bidimensionale a seguito della riduzione del dataset ridotto a due componenti per mezzo del kernelPCA.
-	
+
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.4\textwidth]{img/kernelPCA_2Dnc2.png}
-		\caption{scatterplot 2D bidimensionale applicato su kernelPCA}		
+		\caption{scatterplot 2D bidimensionale applicato su kernelPCA}
 	\end{figure}
-	
-	Da tale rappresentazione - anche se non in maniera netta, data la formazione di diverse agglomerazioni - si evince comunque una buona separabilità dei data point. \\	
-		
+
+	Da tale rappresentazione - anche se non in maniera netta, data la formazione di diverse agglomerazioni - si evince comunque una buona separabilità dei data point. \\
+
 	La percezione di separabilità dei data point diminuisce drasticamente con il plot 2D tridimensionale, come ben visibile in \emph{Figura 7}.
-	
+
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.4\textwidth]{img/kernelPCA_2Dnc3.png}
 		\caption{scatterplot 2D tridimensionale applicato su kernelPCA}
 	\end{figure}
-	
+
 	In \emph{Figura 8}, invece, é possibile notare come i data point siano ben distinti con una rappresentazione grafica 3D, risultando di fatto migliore delle precedenti per questa tecnica di riduzione.
-	
+
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.4\textwidth]{img/kernelPCA_i3D.png}
 		\caption{scatterplot 3D interattivo applicato su kernelPCA}
 	\end{figure}
-	
+
 	Infine, la \emph{Figura 9} mostra il plot di Draftman applicato su kernelPCA per un numero di componenti pari a 9, del tutto simile al plot di Draftman applicato su PCA per lo stesso numero di componenti.
-	
+
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.4\textwidth]{img/kernelPCA_SPLOM.png}
 		\caption{plot di Draftman applicato su kernelPCA}
 	\end{figure}
-	
+
 \end{flushleft}
 
 \begin{flushleft}
-	
+
 	\subsection{MDS}
-	
+
 	La \emph{Figura 10} mostra lo scatterplot 2D bidimensionale del dataset ridotto a due componenti per mezzo del Multi-Dimensional Scaling (MDS).
-	
+
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.5\textwidth]{img/MDS_2Dnc2.png}
 		\caption{scatterplot 2D bidimensionale applicato su MDS}
 	\end{figure}
-	
+
 	È possibile notare come MDS riesca, nonostante i numerosi outliers, a distinguere i punti, seppur in maniera decisamente peggiore delle due tecniche precedentemente descritte.
-	
+
 \end{flushleft}
 
 \begin{flushleft}
-	
+
 	\subsection{t-SNE}
-	
+
 	L'ultima tecnica di riduzione applicata è il t-SNE, rivelatosi poco efficace per la separazione dei data point del dataset, come è possibile evincere in \emph{Figura 14}, \emph{Figura 15}, \emph{Figura 16} e \emph{Figura 17}.
-	
+
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.4\textwidth]{img/tSNE_2Dnc2.png}
 		\caption{scatterplot 2D bidimensionale applicato su t-SNE}
 	\end{figure}
-	
+
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.4\textwidth]{img/tSNE_2Dnc3.png}
 		\caption{scatterplot 2D tridimensionale applicato su t-SNE}
 	\end{figure}
-	
+
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.4\textwidth]{img/tSNE_i3D.png}
 		\caption{scatterplot 3D interattivo applicato su t-SNE}
 	\end{figure}
-	
+
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.4\textwidth]{img/tSNE_SPLOM.png}
 		\caption{plot di Draftman applicato su t-SNE}
 	\end{figure}
-	
+
 \end{flushleft}
 
 \section{Alberi decisionali}
@@ -306,7 +306,7 @@ In un albero decisionale:
 	\item ogni nodo interno effettua un test su un attributo. Questo test può risultare dunque vero o falso
 	\item i nodi interni sono collegati attraverso rami corrispondenti ai risultati dei test
 	\item ogni foglia rappresenta il valore predetto
-	\item ad ogni nodo interno viene spesso associato un \emph{tasso d'errore}, un \emph{indice di Gini} oppure una \emph{variazione di entropia} 
+	\item ad ogni nodo interno viene spesso associato un \emph{tasso d'errore}, un \emph{indice di Gini} oppure una \emph{variazione di entropia}
 \end{itemize}
 Allora, dato un albero decisionale generato addestrando il modello predittivo tramite un training set, per classificare una istanza è necessario e sufficiente esaminare l'unico cammino radice-foglia compiuto da tale istanza.\\
 In particolare, in questo studio, ad ogni nodo interno dell'albero è stato associato l'\emph{indice di Gini}, indice di eterogeneità per variabili qualitative. Più precisamente, l'indice di Gini offre una misura della eterogeneità di una distribuzione statistica a partire dai valori delle frequenze relative associate alle \emph{k} modalità di una generica variabile \emph{X}.\\
@@ -359,7 +359,13 @@ In particolare per la PCA:
 - interpretazione delle componenti
 - interpretazione dei cluster
 
-In particolare, per la PCA è stato condotto anche uno studio volto ad interpretare le componenti. 
+In particolare, per la PCA è stato condotto anche uno studio volto ad interpretare le componenti.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.45\textwidth]{img/PCA_components_interpretation.png}
+	\caption{}
+\end{figure}
 
 Tutti gli alberi decisionali generati sono risultati molto efficaci nel classificare i pazienti virtuali. Infatti, l'albero decisionale per il dataset:
 \begin{itemize}
@@ -370,25 +376,5 @@ Tutti gli alberi decisionali generati sono risultati molto efficaci nel classifi
 	\item ridotto tramite t-SNE è accurato al 99\%
 \end{itemize}
 Quindi, l'albero decisionale corrispondente alla tecnica PCA risulta il più efficace, oltre che il più semplice in termini di profondità. Di contro, gli alberi decisionali risultanti dalle applicazioni delle tecniche kernelPCA e t-SNE risultano i più complessi.\\
-
-\begin{table}
-	\begin{tabular}{lrrrrrrrrrrr}
-		\toprule
-		{} &    Anemia &  Osteopenia &  Diarrea Cronica &  Mancata Crescita &  Disturbi Genetici &  Madre Celiaca &      POCT &  IGA totali &   TTG IGG &   TTG\_IGA &  Esami del sangue \\
-		\midrule
-		PCA1  &  0.021174 &   -0.019021 &         0.107475 &          0.240758 &           0.087423 &       0.060552 &  0.535673 &   -0.006585 & -0.000535 &  0.542314 &          0.580751 \\
-		PCA2  & -0.375585 &   -0.117085 &        -0.131053 &          0.074470 &          -0.273001 &       0.648769 & -0.049649 &    0.564572 &  0.073576 &  0.016554 &          0.013498 \\
-		PCA3  &  0.309106 &   -0.685092 &        -0.196785 &         -0.055088 &           0.010259 &      -0.075723 & -0.014175 &    0.033721 &  0.620485 &  0.027392 &          0.020347 \\
-		PCA4  &  0.233782 &    0.257557 &        -0.399681 &         -0.228733 &           0.726553 &       0.132908 &  0.031805 &    0.346420 &  0.006272 &  0.001695 &          0.018487 \\
-		PCA5  & -0.684636 &    0.146913 &        -0.213275 &         -0.031855 &           0.242365 &       0.026284 &  0.007417 &   -0.442793 &  0.455041 &  0.011601 &          0.020948 \\
-		PCA6  &  0.325528 &    0.617689 &        -0.235401 &          0.265295 &          -0.395746 &      -0.044007 &  0.053168 &    0.058916 &  0.469734 & -0.032704 &         -0.011295 \\
-		PCA7  & -0.097592 &    0.163931 &         0.754730 &         -0.143666 &           0.192104 &      -0.150319 & -0.038597 &    0.372488 &  0.415195 & -0.012365 &         -0.032678 \\
-		PCA8  &  0.345656 &    0.067443 &         0.298354 &         -0.177496 &           0.064920 &       0.719673 &  0.009728 &   -0.468333 &  0.097117 & -0.042078 &         -0.051735 \\
-		PCA9  &  0.037931 &   -0.102256 &         0.114162 &          0.869168 &           0.364715 &       0.094203 & -0.167536 &   -0.021938 & -0.003406 & -0.181975 &         -0.126698 \\
-		PCA10 & -0.051766 &   -0.068591 &         0.012126 &         -0.010540 &          -0.004180 &      -0.001638 &  0.732576 &    0.040809 & -0.001497 & -0.672300 &         -0.044883 \\
-		PCA11 & -0.021704 &   -0.023156 &        -0.009581 &          0.045072 &           0.018279 &       0.002133 &  0.374399 &    0.017446 & -0.000554 &  0.465445 &         -0.799633 \\
-		\bottomrule
-	\end{tabular}
-\end{table}
 
 \end{document}
