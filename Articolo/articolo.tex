@@ -1,0 +1,394 @@
+\documentclass[11pt,a4paper,twocolumn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english,italian]{babel}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{makeidx}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{sectsty}
+\usepackage{booktabs}
+\allsectionsfont{\normalsize\bfseries}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\author{Salvatore Calderaro \and Simone Contini \and Dario Curreri}
+\title{%
+\includegraphics[width=0.3\textwidth]{img/unipa.jpg}{\centering}~
+\\
+Celiachion:\\
+riduzione dimensionale, relative visualizzazioni e classificazione
+}
+\begin{document}
+\date{}
+\selectlanguage{english}
+\twocolumn[
+  \begin{@twocolumnfalse}
+  \maketitle
+    \begin{abstract}
+Abbiamo condotto uno studio empirico per determinare le relazioni presenti tra quattro diverse tecniche di visualizzazione (scatterplot 2D per dati bidimensionali, scatterplot 2D per dati tridimensionali, scatterplot 3D interattivo e plot di Draftman) e quattro diverse tecniche per la riduzione della dimensionalità (PCA, kernel PCA, MDS e t-SNE). L'analisi è stata effettuata su un dataset virtuale contenente dati biomedici utilizzati per la diagnosi della celiachia. Dalle rappresentazioni grafiche si evince come PCA e kernel PCA siano più efficienti per la visualizzazione delle due classi. Inoltre si nota che nella maggior parte dei casi gli scatterplot 2D sono già sufficienti per rilevare una buona distinzione tra le classi. Sono stati creati, dunque,  degli alberi decisionali sia per il dataset non ridotto, sia per i dataset ridotti tramite le tecniche precedentemente citate. Infine i risultati ottenuti sono stati confrontati - in termini di accuratezza - con quelli del classificatore addestrato sul dataset non ridotto. \\
+    \end{abstract}
+  \end{@twocolumnfalse}
+]
+\selectlanguage{italian}
+\section{Introduzione}
+Ridurre la dimensionalità dei dati è uno dei task fondamentali per l'analisi dei dati e per le eventuali elaborazioni successive (regressione, classificazione, etc.).\\
+In \emph{Sezione 2} sono descritte le tecniche di riduzione dimensionale applicate al nostro dataset: PCA, kernel PCA, MDS e t-SNE.\\
+In \emph{Sezione 3} vengono dapprima definite le quattro tecniche di visualizzazione impiegate: scatterplot 2D per dati bidimensionali, scatterplot 2D per dati tridimensionali, scatterplot 3D interattivo e plot di Draftman; successivamente queste vengono applicate per ciascuna tecnica di riduzione.\\
+In \emph{Sezione 4}, invece, vengono addestrati e illustrati gli alberi decisionali sia per il dataset non ridotto, sia per i dataset ridotti attraverso le tecniche di riduzione trattate.\\
+In \emph{Sezione 5}, infine, vengono tratte le conclusioni riguardo le migliori visualizzazioni prodotte e confrontate le metriche dei classificatori addestrati.\\
+\subsection{Il dataset "nome dataset"}
+Il dataset utilizzato per gli esperimenti è il "celiachion", un insieme di dati relativi a pazienti virtuali generato per addestrare un classificatore fuzzy per la diagnosi della celiachia nei bambini siciliani e maltesi.\\
+In particolare il dataset contiene per ogni paziente le seguenti informazioni:
+\begin{itemize}
+	\item Anemia: valore booleano. Indica se il paziente soffre di anemia (0 negativo, 1 positivo)
+	\item Osteopenia: valore booleano. Indica se il paziente soffre di osteopenia.
+	\item Diarrea cronica: valore booleano. Indica se il paziente soffre di diarrea cronica
+	\item Mancata crescita: valore booleano. Indica se il paziente soffre di ritardo della crescita
+	\item Disturbi genetici: valore booleano. Indica se il paziente soffre di disturbi genetici
+	\item Madre celiaca: valore booleano. Indica se la madre del paziente soffre di celiachia
+	\item POCT: valore booleano. Indica se il test POCT è risultato positivo o negativo.
+	\item IGA totali: numero reale positivo. Indica la quantità di immunoglobuline A misurata in mg/dl
+	\item TTG IGG: numero reale positivo. Indica la quantità di anticorpi anti-transglutaminasi appartenenti alla famiglia delle immunoglobuline G, misurata in AU/ml
+	\item TTG IGA: numero reale positivo Indica la quantità di anticorpi anti-transglutaminasi appartenenti alla famiglia delle immunoglobuline A, misurata in AU/ml
+	\item Esami del sangue: valore booleano. Indica se gli esami del sangue svolti dal paziente sono risultati idonei alla celiachia
+	\item Class: numero naturale. Indica se il paziente soffre di celiachia
+\end{itemize}
+\section{Tecniche di riduzione dimensionale}
+L'obiettivo delle tecniche di riduzione dimensionale è quello di eseguire un mapping dallo spazio iniziale $ \mathcal{R}^d$, dove $ d $ rappresenta il numero delle feature, a uno spazio dimensionale inferiore  $ \mathcal{R}^k$ con $ k<d $. Utilizzare tali tecniche è utile principalmente per due motivi: permettono di analizzare i dati in due o più dimensioni e rendono più semplice e meno oneroso dal punto di vista computazionale l'addestramento di algoritmi di machine learning. \\
+A seguire vengono descritte brevemente le tecniche di riduzione dimensionale usate in questo lavoro. \\
+
+\subsection{Principal Component Analysis (PCA)}
+Utilizza una trasformazione ortogonale per convertire una serie di osservazioni di variabili correlate in un insieme di valori linearmente non correlati, chiamate \emph{componenti principali}. La trasformazione è effettuata in modo tale che la prima componente principale abbia la massima varianza e ogni componente principale successiva abbia a sua volta la massima varianza e sia ortogonale alle componenti principali calcolate precedentemente. Assumendo di avere $ n $ osservazioni e $ p $ feature, la matrice dei dati è una matrice $ X \in \mathbb{R}^{n \times p} $, in cui i dati sono standardizzati e in cui, di conseguenza, ogni colonna ha media nulla. Allora, la prima componente principale è la combinazione lineare normalizzata di feature che ha varianza massima:
+\begin{equation}
+\nonumber
+Z_1=\phi_{11}X_1+\phi_{21}	X_2+\cdots+\phi_{p1}	X_p
+\end{equation}
+
+ Ogni colonna è pesata sulla sua media, e si massimizza la varianza delle combinazioni:
+\begin{equation}
+\nonumber
+\max_{\phi_{i1} \cdots \phi_{p1}}{\biggl\{\frac{1}{n} \sum_{i=1}^n{\biggl(\sum_{j=1}^p{\phi_{j1}x_{ij}}\biggr)^2}\biggr\}} \; \; , \; \; t.c. \; \; \sum_{j=1}^p{\phi_{j1}^2}=1
+\end{equation}
+Per estrarre la componente principale si estraggono gli autovalori della matrice $X^TX$ e si considera l'autovettore corrispondente al massimo degli autovalori ottenendo il loading vector $\phi_1=[\phi_{11},\phi_{21} \cdots , \phi_{p1}]$. Fatto ciò calcoliamo gli score $z_{i1}=\sum_{j=1}^p{\phi_{j1} x_{ij}}$. Gli score risultano dalla proiezione delle osservazioni lungo la direzione del loading vector. Per il calcolo delle componenti principali successive si utilizza lo stesso metodo sopra descritto.\\
+
+\subsection{Kernel Principal Component Analysis (kernelPCA)}
+Variante del PCA che utilizza una funzione kernel per proiettare lo spazio delle feature in uno spazio di dimensione inferiore. Viene usato per dataset i cui dati sono separabili linearmente, mentre potrebbe non portare alla riduzione dimensionale ottimale per dataset che non lo sono. Per comprendere l'utilità di tale metodo osserviamo che, nonostante $ N $ punti non possano - in generale - essere linearmente separabili in $ d <N $ dimensioni, lo possono essere quasi sempre in $ d \geq N $. Dati $ N $ punti  $ x_i $ mappati in uno spazio $ N- $dimensionale mediante $ \Phi(x_i) $, dove $ \Phi \; : \;  \mathbb{R}^d \rightarrow  \mathbb{R}^n $, è semplice costruire l'iperpiano che divide i punti in cluster arbitrari. In particolare, scelta una funzione $ \Phi $, chiamata \emph{spazio delle feature}, si crea una kernel $K$ $n \times n$:
+\begin{equation}
+\nonumber
+K(x,y)=(\Phi(x),\Phi(y))=\Phi(x)^T\Phi(y)
+\end{equation}
+Gli $ N $ elementi di ciascuna colonna di $K$ rappresentano il scalare di un punto dei dati trasformati rispetto a tutti i punti trasformati. Per valutare la proiezione di un punto sullo spazio delle feature $ \Phi(x) $ sulla $ k $-esima componente principale $ V^k $ utilizziamo:
+\begin{equation}
+\nonumber
+V^{k^T}\Phi(x)=\Biggl(\sum_{i=1}^N{a_i^k\Phi(x_i)}\Biggr)^T\Phi(x)
+\end{equation}
+$ \Phi(x_i)^T\Phi(x) $ rappresenta gli elementi del kernel $K$.  L'ultimo step consiste nel calcolare e normalizzare $ a_i^k $ il quale si ottiene risolvendo la seguente equazione:
+\begin{equation}
+\nonumber
+N\lambda a =Ka
+\end{equation}
+dove $ N $ è in numero di punti dell'insieme, $\lambda$ e $a$ sono rispettivamente gli autovalori e gli autovettori di $K$.  Fatto ciò per la normalizzazione  degli autovettori $ a_i^k $ si chiede che: $ 1=(V^k)^TV^k $. I kernel che possono essere utilizzati sono: il gaussiano, il sigmoidale etc.).\\
+
+\subsection{Multi-Dimensional Scaling (MDS)}
+Tecnica esplorativa dei dati che ci consente di ottenere una rappresentazione di $n$ oggetti in $k$ dimensioni partendo da delle informazioni inerenti la similarità (o dissimilarità) tra  ciascuna coppia di oggetti. Iniziamo con il considerare le distanze $ \delta_{ij} $ tra ogni coppia degli $n$ punti $x_1 \cdots x_n$. A partire da queste ultime può essere costruita una matrice $\Delta$ $n \times n$:
+\begin{equation}
+\nonumber
+\Delta=\begin{bmatrix} 
+0 \\
+\delta_{21} &&\\
+\vdots & \ddots\\
+\delta_{n1} &   \dots     & 0
+\end{bmatrix}
+\end{equation}
+Chiamiamo $d_{ij}$ le distanze tra le loro immagini $ y_{1},\cdots,y_{n}$ nello spazio di dimensione $k$ $d_{ij}=\lvert\lvert{y_i-y_j}\lvert\lvert$. Le componenti di $y_i$ nello spazio di arrivo sono $y_{11},y_{12},\cdots,y_{1k}$ e possono essere rappresentati dalla matrice che segue:
+\begin{equation}
+\nonumber
+A = \begin{bmatrix} 
+y_{11}           & \dots         & y_{1k}         \\ 
+\vdots   &  \ddots    & \vdots \\
+y_{n1}          & \dots         & y_{nk}         \\
+\end{bmatrix}
+\end{equation}
+Adesso ci cerca la configurazione $y_{1},\cdots,y_{n}$ per la quale le $\frac{n(n-1)}{2}$ distanze $d_{ij}$ siano più vicine possibile alle distanze originali $\delta_{ij}$. Di solito, non è possibile trovare una configurazione per la quale $d_{ij} = \delta_{ij}$ per tutti gli $i \neq j$. Per trovare una configurazione conveniente fra tutte quelle possibile, è necessario definire un criterio d'errore, spesso chiamato funzione di Stress definita come segue:
+\begin{equation}
+\nonumber
+Stress^2=\frac{\sum_{i<j}{(d_{ij}-\delta_{ij})^2}}{\sum_{i<j}{\delta_{ij}^2}}
+\end{equation}
+Una configurazione ottima degli $y_1,\cdots,y_n$ è quella che minimizza lo Stress, e può essere trovata con  procedure standard di analisi numerica. Per diminuire il tempo di calcolo, la configurazione di partenza $y_1,\cdots,y_n$ può essere scelta a caso o in  modo più conveniente.\\
+
+\subsection{t-Distributed Stochastic Neighbor Embedding (t-SNE)}
+Tecnica di riduzione della dimensionalità non lineare. L'algoritmo modella i punti in modo che oggetti vicini nello spazio originale risultino vicini nello spazio a dimensionalità ridotta, e oggetti lontani risultino lontani, cercando di preservare la struttura locale. L'algoritmo consiste di due fasi. Nella prima fase viene costruita una distribuzione di probabilità che ad ogni coppia di punti nello spazio originale ad alta dimensionalità associa un valore di probabilità elevato se i due punti sono simili, basso se sono dissimili. Quindi viene definita una seconda distribuzione di probabilità analoga, nello spazio a dimensione ridotta. Nella seconda fase l'algoritmo  minimizza la divergenza di Kullback-Leibler delle due distribuzioni tramite gradient descent, riorganizzando i punti nello spazio a dimensione ridotta. Dati $ N $ oggetti $ x_1,\cdots x_n $ in uno spazio ad alta dimensionalità, t-SNE costruisce una distribuzione probabilistica $ p_{ij} $ simmetrica nelle due variabili e proporzionale alla similarità tra i punti $ x_i $ e $ x_j $ definita come segue:
+\begin{equation}
+\nonumber
+p_{ij}=\frac{p_{j \lvert i}+ p_{i \lvert j}}{2N}
+\end{equation}
+dove
+\begin{equation}
+\nonumber
+p_{j \lvert i}=\frac{\exp{\biggl(\frac{-\lvert \vert {x_i-x_j}\lvert \lvert^2}{2\sigma_i^2}\biggr)}}{\sum_{k \neq i}{\exp{\biggl(\frac{-\lvert \vert {x_i-x_k}\lvert \lvert^2}{2\sigma_i^2}\biggr)}}}
+\end{equation}
+L'ampiezza delle gaussiane $ \sigma_i $ è scelta in modo tale che la perplessità della distribuzione condizionale uguagli un valore di perplessità fornito come iperparametro dell'algoritmo. t-SNE cerca di costruire una mappa $ d $-dimensionale $y_1,\cdots, y_N $ i cui punti riflettano il meglio possibile la similarità $p_{ij}$ nello spazio di partenza. La similarità $ q_{ij} $ tra due punti $ y_i $ e $ y_j $ nello spazio a dimensionalità ridotta viene definita come segue:
+\begin{equation}
+\nonumber
+q_{ij}=\frac{\bigl(1+\lvert \vert {x_i-x_j}\lvert \lvert^2\bigr)^{-1}}{\sum_{k \neq m}{1+\lvert \vert {y_k-y_m}\lvert \lvert^2\bigr)^{-1}}}
+\end{equation}
+La differenza principale è l'uso nello spazio a dimensionalità ridotta di una distribuzione t di Student con un grado di libertà al posto della gaussiana, le cui code pesanti consentono di modellare meglio la dissimilarità tra oggetti distanti. La posizione $ y_i $ dei punti nello spazio a dimensione ridotta è quindi calcolata minimizzando tramite gradient descent la divergenza di Kullback-Leibler della distribuzione $ Q $ rispetto a $ P $:
+\begin{equation}
+\nonumber
+KL(P\lvert \lvert Q)=\sum_{i \neq j}{\log{\frac{p_{ij}}{q_{ij}}}}
+\end{equation}
+L'uso della divergenza di Kullback-Leibler come funzione obiettivo consente di avere penalità elevate se punti vicini nello spazio originale  vengono considerati lontani nello spazio a dimensionalità ridotta , mentre il viceversa ha un'influenza minore, tendendo quindi a preservare la struttura locale della distribuzione dei punti. Il risultato è una mappa a bassa dimensionalità che riflette le similarità tra i punti nello spazio ad alta dimensionalità.
+\section{Tecniche di visualizzazione}
+\begin{flushleft}
+	L'analisi esplorativa dei dati è un'operazione finalizzata ad ottenere, per mezzo di rappresentazioni visuali, quanta più informazione possibile riguardo al problema in esame in un dataset.
+	Per stabilire l'efficienza delle quattro tecniche di riduzione dimensionale - descritte in \emph{Sezione 2} - nell'individuare le correlazioni tra le componenti del dataset "nome dataset", sono state utilizzate quattro diverse tecniche di visualizzazione:
+	
+	\begin{itemize}
+		\item scatterplot 2D per dati bidimensionali
+		\item scatterplot 2D per dati tridimensionali
+		\item scatterplot 3D interattivo
+		\item plot di Draftman
+	\end{itemize}
+	
+	Lo scatterplot 2D per dati bidimensionali è una tecnica di visualizzazione per la rappresentazione su un piano cartesiano dei record di un dataset. In particolare, negli assi X ed Y vengono rappresentate le due componenti del dataset con la più alta varianza, calcolate dalla tecnica di riduzione dimensionale di riferimento. \\
+	Per l'aggiunta di una terza dimensione nello scatterplot 2D, viene associato ad ogni data point del piano un attributo - lo spazio - il cui valore è in relazione con la terza componente. \\
+	Lo scatterplot 3D interattivo è un'altra tecnica per la rappresentazione dei data point del dataset ridotto a tre componenti su un piano cartesiano. In questa tipologia di visualizzazione, la terza componente è rappresentata dall'asse Z. \\
+	Infine, Il plot di Draftman è una soluzione utile per la visualizzazione grafica di attributi multivariati. Tale tecnica consiste nel rappresentare coppie di attributi mediante scatterplot bidimensionali in una matrice NxN, dove N è il numero di attributi da rappresentare.
+\end{flushleft}
+
+\begin{flushleft}
+	Per stabilire il numero di componenti ottimale del nostro dataset ridotto è stato creato uno scree-plot, un grafico i cui valori dell'asse delle ascisse corrispondono al numero delle componenti ed i valori dell'asse delle ordinate agli autovalori.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\textwidth]{img/scree_plot.png}
+		\caption{scree plot del dataset Celiachion}		
+	\end{figure}
+	
+	La \emph{Figura 1} mostra lo scree-plot applicato al nostro dataset, che indicherebbe come migliore scelta un numero di componenti pari a 2 o 9, dal momento che è presente un "gomito netto" in corrispondenza di questi valori.
+\end{flushleft}
+
+\begin{flushleft}
+	
+	\subsection{PCA}
+			
+	La \emph{Figura 2} mostra lo scatterplot 2D bidimensionale dopo aver ridotto il nostro dataset con due componenti per mezzo della tecnica di riduzione PCA. \\
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\textwidth]{img/PCA_2Dnc2.png}
+		\caption{scatterplot 2D bidimensionale applicato su PCA}		
+	\end{figure}
+	
+	 L'uso dei colori - blu per la classe \emph{non celiaco} e giallo per la classe \emph{celiaco} - è un'ulteriore informazione che abbiamo voluto aggiungere per verificare la veridicità della separabilità di ciascuna tecnica di riduzione. \\
+	 Dalla \emph{Figura 2} si evince che il PCA - con un numero di componenti principali pari a due - riesce a mantenere una buona separabilità dei data point, ad eccezione fatta per quelli centrali, i quali potrebbero essere facilmente fraintesi. \\
+		
+ 	 Una situazione simile a quella di \emph{Figura 2} è evidente in \emph{Figura 3}, che mostra lo scatterplot 2D a seguito della riduzione della dimensionalità del dataset a tre componenti per mezzo della PCA. \\
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\textwidth]{img/PCA_2Dnc3.png}
+		\caption{scatterplot 2D tridimensionale applicato su PCA}
+	\end{figure}
+
+	Ben evidente è la separabilità dei data point presenti nello scatterplot 3D interattivo, come visibile in \emph{Figura 4}. \\
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\textwidth]{img/PCA_i3D.png}
+		\caption{scatterplot 3D interattivo applicato su PCA}
+	\end{figure}
+	
+	Infine, la \emph{Figura 5} mostra il plot di Draftman applicato al dataset ridotto a 9 componenti per mezzo della tecnica PCA.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\textwidth]{img/PCA_SPLOM.png}
+		\caption{plot di Draftman applicato su PCA}
+	\end{figure}
+	
+	Da tale rappresentazione è possibile notare come la Componente 1, se messo in relazione con tutte le altre componenti della matrice, riesca a mantenere la migliore separabilità.
+\end{flushleft}
+
+\begin{flushleft}
+	
+	\subsection{kernelPCA}
+	
+	In \emph{Figura 6} viene raffigurato lo scatterplot 2D bidimensionale a seguito della riduzione del dataset ridotto a due componenti per mezzo del kernelPCA.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\textwidth]{img/kernelPCA_2Dnc2.png}
+		\caption{scatterplot 2D bidimensionale applicato su kernelPCA}		
+	\end{figure}
+	
+	Da tale rappresentazione - anche se non in maniera netta, data la formazione di diverse agglomerazioni - si evince comunque una buona separabilità dei data point. \\	
+		
+	La percezione di separabilità dei data point diminuisce drasticamente con il plot 2D tridimensionale, come ben visibile in \emph{Figura 7}.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\textwidth]{img/kernelPCA_2Dnc3.png}
+		\caption{scatterplot 2D tridimensionale applicato su kernelPCA}
+	\end{figure}
+	
+	In \emph{Figura 8}, invece, é possibile notare come i data point siano ben distinti con una rappresentazione grafica 3D, risultando di fatto migliore delle precedenti per questa tecnica di riduzione.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\textwidth]{img/kernelPCA_i3D.png}
+		\caption{scatterplot 3D interattivo applicato su kernelPCA}
+	\end{figure}
+	
+	Infine, la \emph{Figura 9} mostra il plot di Draftman applicato su kernelPCA per un numero di componenti pari a 9, del tutto simile al plot di Draftman applicato su PCA per lo stesso numero di componenti.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\textwidth]{img/kernelPCA_SPLOM.png}
+		\caption{plot di Draftman applicato su kernelPCA}
+	\end{figure}
+	
+\end{flushleft}
+
+\begin{flushleft}
+	
+	\subsection{MDS}
+	
+	La \emph{Figura 10} mostra lo scatterplot 2D bidimensionale del dataset ridotto a due componenti per mezzo del Multi-Dimensional Scaling (MDS).
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.5\textwidth]{img/MDS_2Dnc2.png}
+		\caption{scatterplot 2D bidimensionale applicato su MDS}
+	\end{figure}
+	
+	È possibile notare come MDS riesca, nonostante i numerosi outliers, a distinguere i punti, seppur in maniera decisamente peggiore delle due tecniche precedentemente descritte.
+	
+\end{flushleft}
+
+\begin{flushleft}
+	
+	\subsection{t-SNE}
+	
+	L'ultima tecnica di riduzione applicata è il t-SNE, rivelatosi poco efficace per la separazione dei data point del dataset, come è possibile evincere in \emph{Figura 14}, \emph{Figura 15}, \emph{Figura 16} e \emph{Figura 17}.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\textwidth]{img/tSNE_2Dnc2.png}
+		\caption{scatterplot 2D bidimensionale applicato su t-SNE}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\textwidth]{img/tSNE_2Dnc3.png}
+		\caption{scatterplot 2D tridimensionale applicato su t-SNE}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\textwidth]{img/tSNE_i3D.png}
+		\caption{scatterplot 3D interattivo applicato su t-SNE}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\textwidth]{img/tSNE_SPLOM.png}
+		\caption{plot di Draftman applicato su t-SNE}
+	\end{figure}
+	
+\end{flushleft}
+
+\section{Alberi decisionali}
+In machine learing, un albero decisionale è la rappresentazione di un modello predittivo progettato al fine di classificare le istanze di grandi quantità di dati (per questo motivo viene anche chiamato albero di classificazione), contenente solamente strutture selettive.\\
+In un albero decisionale:
+\begin{itemize}
+	\item ogni nodo interno effettua un test su un attributo. Questo test può risultare dunque vero o falso
+	\item i nodi interni sono collegati attraverso rami corrispondenti ai risultati dei test
+	\item ogni foglia rappresenta il valore predetto
+	\item ad ogni nodo interno viene spesso associato un \emph{tasso d'errore}, un \emph{indice di Gini} oppure una \emph{variazione di entropia} 
+\end{itemize}
+Allora, dato un albero decisionale generato addestrando il modello predittivo tramite un training set, per classificare una istanza è necessario e sufficiente esaminare l'unico cammino radice-foglia compiuto da tale istanza.\\
+In particolare, in questo studio, ad ogni nodo interno dell'albero è stato associato l'\emph{indice di Gini}, indice di eterogeneità per variabili qualitative. Più precisamente, l'indice di Gini offre una misura della eterogeneità di una distribuzione statistica a partire dai valori delle frequenze relative associate alle \emph{k} modalità di una generica variabile \emph{X}.\\
+
+\subsection{Classificazione "nome dataset" non ridotto}
+In \emph{Figura 18} viene mostrato l'albero decisionale generato a partire dal dataset non ridotto. In particolare, in questo albero, il 98\% dei pazienti viene classificato attraverso il percorso radice-foglia più a sinistra.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\textwidth]{img/decision_tree.png}
+	\caption{albero decisionale prodotto a partire dal dataset non ridotto.}
+\end{figure}
+
+A partire da questo albero, è stato possibile successivamente generare anche un \emph{treemap}, come mostrato in \emph{Figura 19}, utile per visualizzare graficamente i percorsi radice-foglie più rilevanti coinvolti nella classificazione.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.45\textwidth]{img/treemap.png}
+	\caption{treemap corrispondente all'albero decisionale. Evidenzia quale siano le foglie più rilevanti.}
+\end{figure}
+
+\subsection{Classificazione "nome dataset" ridotto}
+In \emph{Figura 20} viene mostrato invece l'albero decisionale generato a partire dal dataset ridotto a 3 componenti tramite la tecnica PCA.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.25\textwidth]{img/decision_tree_PCA.png}
+	\caption{albero decisionale prodotto per il dataset ridotto tramite la tecnica PCA.}
+\end{figure}
+
+Di seguito vengono mostrati anche in \emph{Figura 21}, \emph{Figura 22} e \emph{Figura 23}, gli alberi decisionali rispettivamente per il dataset ridotto a 3 componenti mediante le tecniche di kernel PCA, MDS e t-SNE.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\textwidth]{img/decision_tree_kernelPCA.png}
+	\caption{albero decisionale prodotto per il dataset ridotto tramite la tecnica kernel PCA.}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.3\textwidth]{img/decision_tree_MDS.png}
+	\caption{albero decisionale prodotto per il dataset ridotto tramite la tecnica MDS.}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\textwidth]{img/decision_tree_tSNE.png}
+	\caption{albero decisionale prodotto per il dataset ridotto tramite la tecnica t-SNE.}
+\end{figure}
+
+\section{Conclusioni}
+Le tecniche di riduzione dimensionale più efficaci tra quelle discusse in questo studio sono risultate essere la PCA e la kernelPCA, come dimostrato in \emph{Figura 2}, \emph{Figura 3}, \emph{Figura 4}, \emph{Figura 5} per la PCA, e in \emph{Figura 6}, in \emph{Figura 8} e in \emph{Figura 9} per il kernelPCA. \\
+
+In particolare per la PCA:
+- interpretazione delle componenti
+- interpretazione dei cluster
+
+In particolare, per la PCA è stato condotto anche uno studio volto ad interpretare le componenti. 
+
+Tutti gli alberi decisionali generati sono risultati molto efficaci nel classificare i pazienti virtuali. Infatti, l'albero decisionale per il dataset:
+\begin{itemize}
+	\item non ridotto è accurato al 100\%
+	\item ridotto tramite PCA è accurato al 100\%
+	\item ridotto tramite kernelPCA è accurato al 99\%
+	\item ridotto tramite MDS è accurato al 99\%
+	\item ridotto tramite t-SNE è accurato al 99\%
+\end{itemize}
+Quindi, l'albero decisionale corrispondente alla tecnica PCA risulta il più efficace, oltre che il più semplice in termini di profondità. Di contro, gli alberi decisionali risultanti dalle applicazioni delle tecniche kernelPCA e t-SNE risultano i più complessi.\\
+
+\begin{table}
+	\begin{tabular}{lrrrrrrrrrrr}
+		\toprule
+		{} &    Anemia &  Osteopenia &  Diarrea Cronica &  Mancata Crescita &  Disturbi Genetici &  Madre Celiaca &      POCT &  IGA totali &   TTG IGG &   TTG\_IGA &  Esami del sangue \\
+		\midrule
+		PCA1  &  0.021174 &   -0.019021 &         0.107475 &          0.240758 &           0.087423 &       0.060552 &  0.535673 &   -0.006585 & -0.000535 &  0.542314 &          0.580751 \\
+		PCA2  & -0.375585 &   -0.117085 &        -0.131053 &          0.074470 &          -0.273001 &       0.648769 & -0.049649 &    0.564572 &  0.073576 &  0.016554 &          0.013498 \\
+		PCA3  &  0.309106 &   -0.685092 &        -0.196785 &         -0.055088 &           0.010259 &      -0.075723 & -0.014175 &    0.033721 &  0.620485 &  0.027392 &          0.020347 \\
+		PCA4  &  0.233782 &    0.257557 &        -0.399681 &         -0.228733 &           0.726553 &       0.132908 &  0.031805 &    0.346420 &  0.006272 &  0.001695 &          0.018487 \\
+		PCA5  & -0.684636 &    0.146913 &        -0.213275 &         -0.031855 &           0.242365 &       0.026284 &  0.007417 &   -0.442793 &  0.455041 &  0.011601 &          0.020948 \\
+		PCA6  &  0.325528 &    0.617689 &        -0.235401 &          0.265295 &          -0.395746 &      -0.044007 &  0.053168 &    0.058916 &  0.469734 & -0.032704 &         -0.011295 \\
+		PCA7  & -0.097592 &    0.163931 &         0.754730 &         -0.143666 &           0.192104 &      -0.150319 & -0.038597 &    0.372488 &  0.415195 & -0.012365 &         -0.032678 \\
+		PCA8  &  0.345656 &    0.067443 &         0.298354 &         -0.177496 &           0.064920 &       0.719673 &  0.009728 &   -0.468333 &  0.097117 & -0.042078 &         -0.051735 \\
+		PCA9  &  0.037931 &   -0.102256 &         0.114162 &          0.869168 &           0.364715 &       0.094203 & -0.167536 &   -0.021938 & -0.003406 & -0.181975 &         -0.126698 \\
+		PCA10 & -0.051766 &   -0.068591 &         0.012126 &         -0.010540 &          -0.004180 &      -0.001638 &  0.732576 &    0.040809 & -0.001497 & -0.672300 &         -0.044883 \\
+		PCA11 & -0.021704 &   -0.023156 &        -0.009581 &          0.045072 &           0.018279 &       0.002133 &  0.374399 &    0.017446 & -0.000554 &  0.465445 &         -0.799633 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\end{document}
