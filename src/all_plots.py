@@ -105,7 +105,7 @@ def PCA_SPLOM(n_params):
     plt.savefig("../Articolo/img/PCA_SPLOM.png")
 
 
-def PCA_component_interpretation():
+def PCA_components_interpretation():
     pca = PCA().fit(X)
     components = pd.DataFrame(pca.components_)
     features = ["Anemia", "Osteopenia", "Diarrea Cronica", "Mancata Crescita", "Disturbi Genetici",
@@ -431,7 +431,7 @@ while c != 0:
     elif (c > 0) and (c < 5):
         sc = sub_menu()
         if c == 1:
-            PCA_component_interpretation()
+            PCA_components_interpretation()
             if sc == 1:
                 PCA_2D()
             elif sc == 2:
