@@ -405,7 +405,11 @@ def sub_menu():
     print("2. 2D (3 dimensioni)")
     print("3. i3D")
     print("4. plot di Draftman")
+<<<<<<< HEAD
     print("5. generazione dataset ")
+=======
+    print("5. generazione dataset ridotto")
+>>>>>>> b753a305cccaf574a3f30b40cc58f6ac7655d439
     print("0. Exit\n")
     temp = int(input())
     print()
