@@ -94,14 +94,14 @@ def generate_test_for_positive_patient(patient):
 
 def generate_POCT_for_positive_patient(patient):
     poct_random_number = np.random.randint(1, 601)
-    if poct_random_number is 1:
+    if poct_random_number == 1:
         patient.POCT = constant.INCONCLUSIVE_POCT
     else:
         patient.POCT = constant.POSITIVE_POCT
 
 
 def test_checker(num):
-    if num is 1:
+    if num == 1:
         return constant.POSITIVE
     else:
         return constant.NEGATIVE
@@ -123,7 +123,7 @@ def create_dataset(num):
 if __name__ == '__main__':
     print("How many rows do you want? Please enter a multiple of 100")
     temp = int(input())
-    while (type(temp) is not int) or (temp % 100 is not 0):
+    while (type(temp) is not int) or (temp % 100 != 0):
         print("Incorret input. Please enter a multiple of 100")
         temp = int(input())
     create_dataset(temp)
