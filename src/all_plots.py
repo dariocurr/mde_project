@@ -18,7 +18,7 @@ dataset_path = "../res/dataset_virtuale.csv"
 
 def initDataframe():
     # Carico il dataser all'interno di un dataFrame
-    dataset = pd.read_csv(dataset_path)
+    dataset = pd.read_csv(dataset_path, index_col=False)
     # Converto i valori NaN con la media
     for column in dataset.columns:
         dataset[column] = pd.to_numeric(dataset[column])

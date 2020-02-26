@@ -11,7 +11,7 @@ dataset_path = "../res/dataset_virtuale.csv"
 
 
 def split_dataset():
-    dataset = pd.read_csv(dataset_path)
+    dataset = pd.read_csv(dataset_path, index_col=False)
     for column in dataset.columns:
         dataset[column] = pd.to_numeric(dataset[column])
         replace_with = dataset[column].mean()
