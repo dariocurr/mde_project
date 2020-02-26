@@ -70,28 +70,43 @@ Z_1=\phi_{11}X_1+\phi_{21}	X_2+\cdots+\phi_{p1}	X_p
 \nonumber
 \max_{\phi_{i1} \cdots \phi_{p1}}{\biggl\{\frac{1}{n} \sum_{i=1}^n{\biggl(\sum_{j=1}^p{\phi_{j1}x_{ij}}\biggr)^2}\biggr\}} \; \; , \; \; t.c. \; \; \sum_{j=1}^p{\phi_{j1}^2}=1
 \end{equation}
-Per estrarre la componente principale si estraggono gli autovalori della matrice $X^TX$ e si considera l'autovettore corrispondente al massimo degli autovalori ottenendo il loading vector $\phi_1=[\phi_{11},\phi_{21} \cdots , \phi_{p1}]$. Fatto ciò calcoliamo gli score $z_{i1}=\sum_{j=1}^p{\phi_{j1} x_{ij}}$. Gli score risultano dalla proiezione delle osservazioni lungo la direzione del loading vector. Per il calcolo delle componenti principali successive si utilizza lo stesso metodo sopra descritto.\\
+Per estrarre la componente principale si estraggono gli autovalori della matrice $X^TX$ e si considera l'autovettore corrispondente al massimo degli autovalori ottenendo il loading vector $\phi_1=[\phi_{11},\phi_{21} \cdots , \phi_{p1}]$. Fatto vengono calcolati gli score $z_{i1}=\sum_{j=1}^p{\phi_{j1} x_{ij}}$. Gli score risultano dalla proiezione delle osservazioni lungo la direzione del loading vector. Per il calcolo delle componenti principali successive si utilizza lo stesso metodo sopra descritto.\\
 
 \subsection{Kernel Principal Component Analysis (kernelPCA)}
-Variante del PCA che utilizza una funzione kernel per proiettare lo spazio delle feature in uno spazio di dimensione inferiore. Viene usato per dataset i cui dati sono separabili linearmente, mentre potrebbe non portare alla riduzione dimensionale ottimale per dataset che non lo sono. Per comprendere l'utilità di tale metodo osserviamo che, nonostante $ N $ punti non possano - in generale - essere linearmente separabili in $ d <N $ dimensioni, lo possono essere quasi sempre in $ d \geq N $. Dati $ N $ punti  $ x_i $ mappati in uno spazio $ N- $dimensionale mediante $ \Phi(x_i) $, dove $ \Phi \; : \;  \mathbb{R}^d \rightarrow  \mathbb{R}^n $, è semplice costruire l'iperpiano che divide i punti in cluster arbitrari. In particolare, scelta una funzione $ \Phi $, chiamata \emph{spazio delle feature}, si crea una kernel $K$ $n \times n$:
+PCA consente di effettuare una riduzione dimensionale lineare, non risulta utile invece  per dati che presentano strutture complesse che non possono essere espresse da sottospazi lineari. Il kernelPCA permette di generalizzare PCA in modo da effettuare una riduzione dimensionale non lineare. \\
+Assumiamo di avere una trasformazione non lineare $\phi$ definita come segue: $\phi \;: \: \mathbb{R}^D \rightarrow  \mathbb{R}^M $ con $ M \gg D $.  Fatto ciò, ogni punto $ x_i $ viene mappato in un punto $ \phi(x_i) $. Assumiamo che:
+\begin{itemize}
+\item le nuove feature proiettate hanno media 0: $ \frac{1}{N}\sum_{i=1}^N{\phi(x_i)}=0$
+\item la matrice di covarianza delle feature proiettate ha dimensione $ M \times M $ ed è calcolata come segue: $ C=\frac{1}{N}\sum_{i=1}^N{\phi(x_i)\phi(x_i)^T} $
+\item gli autovalori e gli autovettori della matrice sopra definita sono dati da: $ Cv_k=\lambda_k v_k $ con $k=1,2,\cdots,M$.
+\end{itemize}
+Dopo aver fatto queste premesse, si sceglie una \emph{funzione kernel} $ \kappa(x_i,x_j)=\phi(x_i)^T\phi(x_j) $. Se viene usata una notazione matriciale abbiamo che:
 \begin{equation}
 \nonumber
-K(x,y)=(\Phi(x),\Phi(y))=\Phi(x)^T\Phi(y)
+K^2a_k=\lambda_kNKa_k
 \end{equation}
-Gli $ N $ elementi di ciascuna colonna di $K$ rappresentano il scalare di un punto dei dati trasformati rispetto a tutti i punti trasformati. Per valutare la proiezione di un punto sullo spazio delle feature $ \Phi(x) $ sulla $ k $-esima componente principale $ V^k $ utilizziamo:
+dove $ k_{i,j}=\kappa(x_i,x_j) $ e $a_k$ è un vettore colonna di dimensione $N$ di $a_{ki}$: $\begin{bmatrix}
+a_{k1}& a_{k2} & \cdots & a_{kN}
+\end{bmatrix} ^T$.
+$a_k$ può essere ottenuto dalla seguente equazione $ Ka_k=\lambda_kNKa_k$ e le componenti principali verranno calcolate come segue:
 \begin{equation}
 \nonumber
-V^{k^T}\Phi(x)=\Biggl(\sum_{i=1}^N{a_i^k\Phi(x_i)}\Biggr)^T\Phi(x)
+y_k(n)=\phi(x)^Tv_k=\sum_{i=1}^N{a_{ki}}\kappa(x,x_i)
 \end{equation}
-$ \Phi(x_i)^T\Phi(x) $ rappresenta gli elementi del kernel $K$.  L'ultimo step consiste nel calcolare e normalizzare $ a_i^k $ il quale si ottiene risolvendo la seguente equazione:
+Se il datset risultante dalla proiezione $\{\phi(x_i)\}$ non ha media zero, verrà utilizzata la \emph{matrice di Gram} $\tilde{K}$  in sostituzione della matrice kernel $K$. La matrice di Gram viene definita cone segue:
 \begin{equation}
 \nonumber
-N\lambda a =Ka
+\tilde{K}=K-1_NK-K1_N+1_NK1_N
 \end{equation}
-dove $ N $ è in numero di punti dell'insieme, $\lambda$ e $a$ sono rispettivamente gli autovalori e gli autovettori di $K$.  Fatto ciò per la normalizzazione  degli autovettori $ a_i^k $ si chiede che: $ 1=(V^k)^TV^k $. I kernel che possono essere utilizzati sono: il gaussiano, il sigmoidale etc.).\\
-
+dove $1_N$ è una matrice dimensione $N \times N$ con tutti gli elementi uguali a $ \frac{1}{N}$.
+Alcuni dei kernel più comunemente utilizzati sono:
+\begin{itemize}
+\item \emph{kernel polinomiale}: $ \kappa(x,y)=(x^Ty)^d $
+\item \emph{kernel gaussiano}: $ \kappa(x,y)=\exp{\biggl(\frac{- \lvert \lvert {x-y} \lvert \lvert ^2}{2 \sigma^2}\biggr)} $
+\item \emph{kernel sigmoidale}: $\kappa(x,y)=\tanh{(\alpha x^Ty+c)}$.
+\end{itemize}
 \subsection{Multi-Dimensional Scaling (MDS)}
-Tecnica esplorativa dei dati che ci consente di ottenere una rappresentazione di $n$ oggetti in $k$ dimensioni partendo da delle informazioni inerenti la similarità (o dissimilarità) tra  ciascuna coppia di oggetti. Iniziamo con il considerare le distanze $ \delta_{ij} $ tra ogni coppia degli $n$ punti $x_1 \cdots x_n$. A partire da queste ultime può essere costruita una matrice $\Delta$ $n \times n$:
+Tecnica esplorativa dei dati che ci consente di ottenere una rappresentazione di $n$ oggetti in $k$ dimensioni partendo da delle informazioni inerenti la similarità (o dissimilarità) tra  ciascuna coppia di oggetti. Iniziamo con il considerare le distanze $ \delta_{ij} $ tra ogni coppia degli $n$ punti $x_1 \cdots x_n$. A partire da queste ultime viene  costruita una matrice $\Delta$ $n \times n$:
 \begin{equation}
 \nonumber
 \Delta=\begin{bmatrix}
@@ -101,7 +116,7 @@ Tecnica esplorativa dei dati che ci consente di ottenere una rappresentazione di
 \delta_{n1} &   \dots     & 0
 \end{bmatrix}
 \end{equation}
-Chiamiamo $d_{ij}$ le distanze tra le loro immagini $ y_{1},\cdots,y_{n}$ nello spazio di dimensione $k$ $d_{ij}=\lvert\lvert{y_i-y_j}\lvert\lvert$. Le componenti di $y_i$ nello spazio di arrivo sono $y_{11},y_{12},\cdots,y_{1k}$ e possono essere rappresentati dalla matrice che segue:
+Chiamiamo $d_{ij}$ le distanze tra le immagini $ y_{1},\cdots,y_{n}$ nello spazio di dimensione $k$ $d_{ij}=\lvert\lvert{y_i-y_j}\lvert\lvert$. Le componenti di $y_i$ nello spazio di arrivo sono $y_{11},y_{12},\cdots,y_{1k}$ e possono essere rappresentati dalla matrice che segue:
 \begin{equation}
 \nonumber
 A = \begin{bmatrix}
