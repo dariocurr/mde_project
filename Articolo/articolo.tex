@@ -352,16 +352,20 @@ Di seguito vengono mostrati anche in \emph{Figura 21}, \emph{Figura 22} e \emph{
 \section{Conclusioni}
 Le tecniche di riduzione dimensionale più efficaci tra quelle discusse in questo studio sono risultate essere la PCA e la kernelPCA, come dimostrato in \emph{Figura 2}, \emph{Figura 3}, \emph{Figura 4}, \emph{Figura 5} per la PCA, e in \emph{Figura 6}, in \emph{Figura 8} e in \emph{Figura 9} per il kernelPCA. \par
 
-In particolare per la PCA:
-- interpretazione delle componenti
-- interpretazione dei cluster
-
-In particolare, per la PCA è stato condotto anche uno studio volto ad interpretare le componenti.
+In particolare, per la PCA è stato condotto un ulteriore studio volto ad interpretare le componenti. Come mostrato in \emph{Figura 21}, la prima componente principale è fortemente influenzata dai parametri \emph{Esami del sangue}, \emph{TTG IGA} e \emph{POCT}, mentre la seconda componente principale dai parametri \emph{IGA totali} e \emph{Madre Celiaca}. 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.45\textwidth]{img/PCA_components_interpretation.png}
-	\caption{}
+	\caption{Interpretazione delle componenti del dataset "nomedataset" per la tecnica di riduzione PCA}
+\end{figure}
+
+Inoltre, a seguito dei risultati ottenuti in \emph{Figura 2} e \emph{Figura 21}, è stata condotta una ricerca approfondita per l'individuazione dei data point allineati appartenenti al cluster centrale di \emph{Figura 2}. La \emph{Figura 22} mostra la lista dei pazienti corrispondenti a quei punti. È stato, infatti, interessante notare come una combinazione di valori di \emph{Esami del sangue=0.0}, \emph{TTG IGA=NaN} e \emph{POCT=2.0} possa essere possibile causa di fraintendimento per la diagnosi della celiachia in un paziente.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.45\textwidth]{img/pazientiFiltrati.png}
+	\caption{lista dei pazienti corrispondenti ai punti allineati del cluster centrale di \emph{Figura 2}}
 \end{figure}
 
 Tutti gli alberi decisionali generati sono risultati molto efficaci nel classificare i pazienti virtuali. Infatti, l'albero decisionale per il dataset:
@@ -373,5 +377,4 @@ Tutti gli alberi decisionali generati sono risultati molto efficaci nel classifi
 	\item ridotto tramite t-SNE è accurato al 99\%
 \end{itemize}
 Quindi, l'albero decisionale corrispondente alla tecnica PCA risulta il più efficace, oltre che il più semplice in termini di profondità. Di contro, gli alberi decisionali risultanti dalle applicazioni delle tecniche kernelPCA e t-SNE risultano i più complessi.
-
 \end{document}
