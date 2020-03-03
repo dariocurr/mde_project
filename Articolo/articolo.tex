@@ -26,7 +26,7 @@ riduzione dimensionale, relative visualizzazioni e classificazione
   \begin{@twocolumnfalse}
   \maketitle
     \begin{abstract}
-Abbiamo condotto uno studio empirico per determinare le relazioni presenti tra quattro diverse tecniche di visualizzazione (scatterplot 2D per dati bidimensionali, scatterplot 2D per dati tridimensionali, scatterplot 3D interattivo e plot di Draftman) e quattro diverse tecniche per la riduzione della dimensionalità (PCA, kernel PCA, MDS e t-SNE). L'analisi è stata effettuata su un dataset virtuale contenente dati biomedici utilizzati per la diagnosi della celiachia e due classi: \emph{celiaco} e \emph{non celiaco}. Dalle rappresentazioni grafiche si evince come PCA e kernel PCA siano più efficienti per la visualizzazione delle due classi. Inoltre si nota che nella maggior parte dei casi gli scatterplot 2D sono già sufficienti per rilevare una buona distinzione tra le classi. Sono stati creati, dunque,  degli alberi decisionali sia per il dataset non ridotto, sia per i dataset ridotti tramite le tecniche precedentemente citate. Infine i risultati ottenuti sono stati confrontati - in termini di accuratezza - reciprocamente. \\
+Abbiamo condotto uno studio empirico per determinare le relazioni presenti tra quattro diverse tecniche di visualizzazione (scatterplot 2D per dati bidimensionali, scatterplot 2D per dati tridimensionali, scatterplot 3D interattivo e plot di Draftman) e quattro diverse tecniche per la riduzione della dimensionalità (PCA, kernel PCA, MDS e t-SNE). L'analisi è stata effettuata su un dataset virtuale contenente dati biomedici utilizzati per la diagnosi della celiachia. Dalle rappresentazioni grafiche si evince come PCA e kernel PCA siano più efficienti per la visualizzazione delle due classi. Inoltre si nota che nella maggior parte dei casi gli scatterplot 2D sono già sufficienti per rilevare una buona distinzione tra le classi. Sono stati creati, dunque,  degli alberi decisionali sia per il dataset non ridotto, sia per i dataset ridotti tramite le tecniche precedentemente citate. Infine i risultati ottenuti sono stati confrontati - in termini di accuratezza - con quelli del classificatore addestrato sul dataset non ridotto. \\
     \end{abstract}
   \end{@twocolumnfalse}
 ]
@@ -56,7 +56,7 @@ In particolare il dataset contiene per ogni paziente le seguenti informazioni:
 \end{itemize}
 \section{Tecniche di riduzione dimensionale}
 L'obiettivo delle tecniche di riduzione dimensionale è quello di eseguire un mapping dallo spazio iniziale $ \mathcal{R}^d$, dove $ d $ rappresenta il numero delle feature, a uno spazio dimensionale inferiore  $ \mathcal{R}^k$ con $ k<d $. Utilizzare tali tecniche è utile principalmente per due motivi: permettono di analizzare i dati in due o più dimensioni e rendono più semplice e meno oneroso dal punto di vista computazionale l'addestramento di algoritmi di machine learning. \par
-A seguire vengono descritte brevemente le tecniche di riduzione dimensionale considerate ed utilizzate in questo studio. 
+A seguire vengono descritte brevemente le tecniche di riduzione dimensionale considerate ed utilizzate in questo studio.
 
 \subsection{Principal Component Analysis (PCA)}
 Utilizza una trasformazione ortogonale per convertire una serie di osservazioni di variabili correlate in un insieme di valori linearmente non correlati, chiamate \emph{componenti principali}. La trasformazione è effettuata in modo tale che la prima componente principale abbia la massima varianza e ogni componente principale successiva abbia a sua volta la massima varianza e sia ortogonale alle componenti principali calcolate precedentemente. Assumendo di avere $ n $ osservazioni e $ p $ feature, la matrice dei dati è una matrice $ X \in \mathbb{R}^{n \times p} $, in cui i dati sono standardizzati e in cui, di conseguenza, ogni colonna ha media nulla. Allora, la prima componente principale è la combinazione lineare normalizzata di feature che ha varianza massima:
@@ -73,27 +73,27 @@ Z_1=\phi_{11}X_1+\phi_{21}	X_2+\cdots+\phi_{p1}	X_p
 Per estrarre la componente principale si estraggono gli autovalori della matrice $X^TX$ e si considera l'autovettore corrispondente al massimo degli autovalori ottenendo il loading vector $\phi_1=[\phi_{11},\phi_{21} \cdots , \phi_{p1}]$. Fatto vengono calcolati gli score $z_{i1}=\sum_{j=1}^p{\phi_{j1} x_{ij}}$. Gli score risultano dalla proiezione delle osservazioni lungo la direzione del loading vector. Per il calcolo delle componenti principali successive si utilizza lo stesso metodo sopra descritto.
 
 \subsection{Kernel Principal Component Analysis (kernelPCA)}
-PCA consente di effettuare una riduzione dimensionale lineare, non risulta utile invece  per dati che presentano strutture complesse che non possono essere espresse da sottospazi lineari. Il kernelPCA permette di generalizzare PCA in modo da effettuare una riduzione dimensionale non lineare. \par
-Assumiamo di avere una trasformazione non lineare $\phi$ definita come segue: $\phi \;: \: \mathbb{R}^D \rightarrow  \mathbb{R}^M $ con $ M \gg D $.  Fatto ciò, ogni punto $ x_i $ viene mappato in un punto $ \phi(x_i) $. Assumiamo che:
+PCA consente di effettuare una riduzione dimensionale lineare, che tuttavia non risulta utile per dati con strutture complesse che non possono essere espresse mediante sottospazi lineari. Il kernelPCA, invece, permette di generalizzare PCA in modo tale da effettuare una riduzione dimensionale non lineare. \par
+Assumendo di avere una trasformazione non lineare $\phi$ definita come segue: $\phi \;: \: \mathbb{R}^D \rightarrow  \mathbb{R}^M $ con $ M \gg D $, ogni punto $ x_i $ viene mappato in un punto $ \phi(x_i) $. Inoltre:
 \begin{itemize}
 \item le nuove feature proiettate hanno media 0: $ \frac{1}{N}\sum_{i=1}^N{\phi(x_i)}=0$
 \item la matrice di covarianza delle feature proiettate ha dimensione $ M \times M $ ed è calcolata come segue: $ C=\frac{1}{N}\sum_{i=1}^N{\phi(x_i)\phi(x_i)^T} $
 \item gli autovalori e gli autovettori della matrice sopra definita sono dati da: $ Cv_k=\lambda_k v_k $ con $k=1,2,\cdots,M$.
 \end{itemize}
-Dopo aver fatto queste premesse, si sceglie una \emph{funzione kernel} $ \kappa(x_i,x_j)=\phi(x_i)^T\phi(x_j) $. Se viene usata una notazione matriciale abbiamo che:
+Detto ciò, viene scelta una \emph{funzione kernel} $ \kappa(x_i,x_j)=\phi(x_i)^T\phi(x_j) $. Allora, se viene utilizzata una notazione matriciale si avrà che:
 \begin{equation}
 \nonumber
 K^2a_k=\lambda_kNKa_k
 \end{equation}
 dove $ k_{i,j}=\kappa(x_i,x_j) $ e $a_k$ è un vettore colonna di dimensione $N$ di $a_{ki}$: $\begin{bmatrix}
 a_{k1}& a_{k2} & \cdots & a_{kN}
-\end{bmatrix} ^T$. 
-$a_k$ può essere ottenuto dalla seguente equazione $ Ka_k=\lambda_kNKa_k$ e le componenti principali verranno calcolate come segue:
+\end{bmatrix} ^T$.
+$a_k$ può essere ottenuto dalla seguente equazione: $ Ka_k=\lambda_kNKa_k$, mentre le componenti principali vengono calcolate come segue:
 \begin{equation}
 \nonumber
 y_k(n)=\phi(x)^Tv_k=\sum_{i=1}^N{a_{ki}}\kappa(x,x_i)
 \end{equation}
-Se il datset risultante dalla proiezione $\{\phi(x_i)\}$ non ha media zero, verrà utilizzata la \emph{matrice di Gram} $\tilde{K}$  in sostituzione della matrice kernel $K$. La matrice di Gram viene definita cone segue:
+Se il dataset risultante dalla proiezione $\{\phi(x_i)\}$ non dovesse avere media zero, verrà utilizzata la \emph{matrice di Gram} $\tilde{K}$ e non la matrice kernel $K$. In particolare, la matrice di Gram viene definita cone segue:
 \begin{equation}
 \nonumber
 \tilde{K}=K-1_NK-K1_N+1_NK1_N
@@ -106,7 +106,7 @@ Alcuni dei kernel più comunemente utilizzati sono:
 \item \emph{kernel sigmoidale}: $\kappa(x,y)=\tanh{(\alpha x^Ty+c)}$.
 \end{itemize}
 \subsection{Multi-Dimensional Scaling (MDS)}
-Tecnica esplorativa dei dati che ci consente di ottenere una rappresentazione di $n$ oggetti in $k$ dimensioni partendo da delle informazioni inerenti la similarità (o dissimilarità) tra  ciascuna coppia di oggetti. Iniziamo con il considerare le distanze $ \delta_{ij} $ tra ogni coppia degli $n$ punti $x_1 \cdots x_n$. A partire da queste ultime viene  costruita una matrice $\Delta$ $n \times n$:
+Tecnica esplorativa dei dati che consente di ottenere una rappresentazione di $n$ oggetti in $k$ dimensioni partendo da informazioni inerenti la similarità (o dissimilarità) tra  ciascuna coppia di oggetti. Considerate le distanze $ \delta_{ij} $ tra ogni coppia degli $n$ punti $x_1 \cdots x_n$, a partire da quest'ultime viene costruita una matrice $\Delta$ $n \times n$:
 \begin{equation}
 \nonumber
 \Delta=\begin{bmatrix}
@@ -116,7 +116,7 @@ Tecnica esplorativa dei dati che ci consente di ottenere una rappresentazione di
 \delta_{n1} &   \dots     & 0
 \end{bmatrix}
 \end{equation}
-Chiamiamo $d_{ij}$ le distanze tra le immagini $ y_{1},\cdots,y_{n}$ nello spazio di dimensione $k$ $d_{ij}=\lvert\lvert{y_i-y_j}\lvert\lvert$. Le componenti di $y_i$ nello spazio di arrivo sono $y_{11},y_{12},\cdots,y_{1k}$ e possono essere rappresentati dalla matrice che segue:
+Chiamate $d_{ij}$ le distanze tra le immagini $ y_{1},\cdots,y_{n}$ nello spazio di dimensione $k$ $d_{ij}=\lvert\lvert{y_i-y_j}\lvert\lvert$, le componenti di $y_i$ nello spazio di arrivo sono $y_{11},y_{12},\cdots,y_{1k}$ e possono essere rappresentate attraverso la seguente matrice:
 \begin{equation}
 \nonumber
 A = \begin{bmatrix}
@@ -125,14 +125,14 @@ y_{11}           & \dots         & y_{1k}         \\
 y_{n1}          & \dots         & y_{nk}         \\
 \end{bmatrix}
 \end{equation}
-Adesso ci cerca la configurazione $y_{1},\cdots,y_{n}$ per la quale le $\frac{n(n-1)}{2}$ distanze $d_{ij}$ siano più vicine possibile alle distanze originali $\delta_{ij}$. Di solito, non è possibile trovare una configurazione per la quale $d_{ij} = \delta_{ij}$ per tutti gli $i \neq j$. Per trovare una configurazione conveniente fra tutte quelle possibile, è necessario definire un criterio d'errore, spesso chiamato funzione di Stress definita come segue:
+Allora, l'obiettivo è trovare la configurazione $y_{1},\cdots,y_{n}$ per la quale le $\frac{n(n-1)}{2}$ distanze $d_{ij}$ siano più simili possibile alle distanze originali $\delta_{ij}$. Tuttavia, molto spesso, non è possibile trovare una configurazione per la quale $d_{ij} = \delta_{ij}$ per tutti gli $i \neq j$. Per trovare la configurazione migliore fra tutte quelle possibile, è necessario definire un criterio d'errore, spesso chiamato funzione di Stress, definito come segue:
 \begin{equation}
 \nonumber
 Stress^2=\frac{\sum_{i<j}{(d_{ij}-\delta_{ij})^2}}{\sum_{i<j}{\delta_{ij}^2}}
 \end{equation}
-Una configurazione ottima degli $y_1,\cdots,y_n$ è quella che minimizza lo Stress, e può essere trovata con  procedure standard di analisi numerica. Per diminuire il tempo di calcolo, la configurazione di partenza $y_1,\cdots,y_n$ può essere scelta a caso o in  modo più conveniente.
+Dunque, la configurazione ottima per $y_1,\cdots,y_n$ è quella che permette di minimizzare lo Stress. Questa configurazione può essere trovata con  procedure standard di analisi numerica. Per diminuire il tempo di calcolo, la configurazione di partenza $y_1,\cdots,y_n$ può essere scelta a caso o in  modo più conveniente.
 \subsection{t-Distributed Stochastic Neighbor Embedding (t-SNE)}
-Tecnica di riduzione della dimensionalità non lineare. L'algoritmo modella i punti in modo che oggetti vicini nello spazio originale risultino vicini nello spazio a dimensionalità ridotta, e oggetti lontani risultino lontani, cercando di preservare la struttura locale. L'algoritmo consiste di due fasi. Nella prima fase viene costruita una distribuzione di probabilità che ad ogni coppia di punti nello spazio originale ad alta dimensionalità associa un valore di probabilità elevato se i due punti sono simili, basso se sono dissimili. Quindi viene definita una seconda distribuzione di probabilità analoga, nello spazio a dimensione ridotta. Nella seconda fase l'algoritmo  minimizza la divergenza di Kullback-Leibler delle due distribuzioni tramite gradient descent, riorganizzando i punti nello spazio a dimensione ridotta. Dati $ N $ oggetti $ x_1,\cdots x_n $ in uno spazio ad alta dimensionalità, t-SNE costruisce una distribuzione probabilistica $ p_{ij} $ simmetrica nelle due variabili e proporzionale alla similarità tra i punti $ x_i $ e $ x_j $ definita come segue:
+Tecnica di riduzione della dimensionalità non lineare. L'algoritmo modella i punti in modo tale che oggetti vicini nello spazio originale risultino vicini nello spazio a dimensionalità ridotta, ed oggetti lontani risultino lontani, cercando di preservare la struttura locale. L'algoritmo consiste di due fasi. Nella prima fase viene costruita una distribuzione di probabilità che ad ogni coppia di punti nello spazio originale ad alta dimensionalità associa un valore di probabilità elevato se i due punti sono simili, basso se sono dissimili. Quindi viene definita una seconda distribuzione di probabilità analoga, nello spazio a dimensione ridotta. Nella seconda fase l'algoritmo  minimizza la divergenza di Kullback-Leibler delle due distribuzioni tramite gradient descent, riorganizzando i punti nello spazio a dimensione ridotta. Dati $ N $ oggetti $ x_1,\cdots x_n $ in uno spazio ad alta dimensionalità, t-SNE costruisce una distribuzione probabilistica $ p_{ij} $ simmetrica nelle due variabili e proporzionale alla similarità tra i punti $ x_i $ e $ x_j $ definita come segue:
 \begin{equation}
 \nonumber
 p_{ij}=\frac{p_{j \lvert i}+ p_{i \lvert j}}{2N}
@@ -192,7 +192,7 @@ L'uso della divergenza di Kullback-Leibler come funzione obiettivo consente di a
 	 L'uso dei colori - blu per la classe \emph{non celiaco} e giallo per la classe \emph{celiaco} - è un'ulteriore informazione che abbiamo voluto aggiungere per verificare la veridicità della separabilità di ciascuna tecnica di riduzione. \par
 	 Dalla \emph{Figura 2} si evince che il PCA - con un numero di componenti principali pari a due - riesce a mantenere una buona separabilità dei data point, ad eccezione fatta per quelli centrali, i quali potrebbero essere facilmente fraintesi. \par
 
- 	 Una situazione simile a quella di \emph{Figura 2} è evidente in \emph{Figura 3}, che mostra lo scatterplot 2D a seguito della riduzione della dimensionalità del dataset a tre componenti per mezzo della PCA. 
+ 	 Una situazione simile a quella di \emph{Figura 2} è evidente in \emph{Figura 3}, che mostra lo scatterplot 2D a seguito della riduzione della dimensionalità del dataset a tre componenti per mezzo della PCA.
 
 	\begin{figure}[h]
 		\centering
@@ -254,7 +254,7 @@ L'uso della divergenza di Kullback-Leibler come funzione obiettivo consente di a
 		\includegraphics[width=0.4\textwidth]{img/kernelPCA_SPLOM.png}
 		\caption{plot di Draftman applicato su kernelPCA}
 	\end{figure}
-	
+
 	\subsection{MDS}
 
 	La \emph{Figura 10} mostra lo scatterplot 2D bidimensionale del dataset ridotto a due componenti per mezzo del Multi-Dimensional Scaling (MDS).
@@ -264,21 +264,21 @@ L'uso della divergenza di Kullback-Leibler come funzione obiettivo consente di a
 		\includegraphics[width=0.5\textwidth]{img/MDS_2Dnc2.png}
 		\caption{scatterplot 2D bidimensionale applicato su MDS}
 	\end{figure}
-	
+
 	È possibile notare dallo scatterplot 2D bidimensionale come MDS riesca, nonostante i numerosi outliers, a distinguere i punti, seppur in maniera decisamente peggiore delle due tecniche di riduzione precedentemente descritte. Tuttavia, non si ha la medesima percezione applicando le altre tecniche di visualizzazione, come mostrato in \emph{Figura 11}, \emph{Figura 12} e \emph{Figura 13}.
-	
+
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.5\textwidth]{img/MDS_2Dnc3.png}
 		\caption{scatterplot 2D tridimensionale applicato su MDS}
 	\end{figure}
-	
+
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.5\textwidth]{img/MDS_i3D.png}
 		\caption{scatterplot 3D interattivo applicato su MDS}
 	\end{figure}
-	
+
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.5\textwidth]{img/MDS_SPLOM.png}
@@ -286,7 +286,7 @@ L'uso della divergenza di Kullback-Leibler come funzione obiettivo consente di a
 	\end{figure}
 
     \subsection{t-SNE}
-    
+
     L'ultima tecnica di riduzione applicata è il t-SNE, rivelatosi poco efficace per la separazione dei data point del dataset, come è possibile evincere in \emph{Figura 14}, \emph{Figura 15}, \emph{Figura 16} e \emph{Figura 17}.
 
 	\begin{figure}[H]
@@ -370,7 +370,7 @@ Di seguito vengono mostrati anche in \emph{Figura 21}, \emph{Figura 22} e \emph{
 \section{Conclusioni}
 Le tecniche di riduzione dimensionale più efficaci tra quelle discusse in questo studio sono risultate essere la PCA e la kernelPCA, come dimostrato in \emph{Figura 2}, \emph{Figura 3}, \emph{Figura 4}, \emph{Figura 5} per la PCA, e in \emph{Figura 6}, in \emph{Figura 8} e in \emph{Figura 9} per il kernelPCA. \par
 
-In particolare, per la PCA è stato condotto un ulteriore studio volto ad interpretare le componenti. Come mostrato in \emph{Figura 24}, la prima componente principale è fortemente influenzata dai parametri \emph{Esami del sangue}, \emph{TTG IGA} e \emph{POCT}, mentre la seconda componente principale dai parametri \emph{IGA totali} e \emph{Madre Celiaca}. 
+In particolare, per la PCA è stato condotto un ulteriore studio volto ad interpretare le componenti. Come mostrato in \emph{Figura 24}, la prima componente principale è fortemente influenzata dai parametri \emph{Esami del sangue}, \emph{TTG IGA} e \emph{POCT}, mentre la seconda componente principale dai parametri \emph{IGA totali} e \emph{Madre Celiaca}.
 
 \begin{figure}[H]
 	\centering
