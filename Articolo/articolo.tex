@@ -68,7 +68,7 @@ Z_1=\phi_{11}X_1+\phi_{21}	X_2+\cdots+\phi_{p1}	X_p
  Ogni colonna è pesata sulla sua media, e si massimizza la varianza delle combinazioni:
 \begin{equation}
 \nonumber
-\max_{\phi_{i1} \cdots \phi_{p1}}{\biggl\{\frac{1}{n} \sum_{i=1}^n{\biggl(\sum_{j=1}^p{\phi_{j1}x_{ij}}\biggr)^2}\biggr\}} \; \; , \; \; t.c. \; \; \sum_{j=1}^p{\phi_{j1}^2}=1
+\max_{\phi_{i1} \cdots \phi_{p1}}{\Biggl\{\frac{1}{n} \sum_{i=1}^n{\Biggl(\sum_{j=1}^p{\phi_{j1}x_{ij}}\Biggr)^2}\Biggr\}} \; \; , \; \; t.c. \; \; \sum_{j=1}^p{\phi_{j1}^2}=1
 \end{equation}
 Per estrarre la componente principale si estraggono gli autovalori della matrice $X^TX$ e si considera l'autovettore corrispondente al massimo degli autovalori ottenendo il loading vector $\phi_1=[\phi_{11},\phi_{21} \cdots , \phi_{p1}]$. Fatto vengono calcolati gli score $z_{i1}=\sum_{j=1}^p{\phi_{j1} x_{ij}}$. Gli score risultano dalla proiezione delle osservazioni lungo la direzione del loading vector. Per il calcolo delle componenti principali successive si utilizza lo stesso metodo sopra descritto.
 
@@ -110,10 +110,10 @@ Tecnica esplorativa dei dati che consente di ottenere una rappresentazione di $n
 \begin{equation}
 \nonumber
 \Delta=\begin{bmatrix}
-0 \\
-\delta_{21} &&\\
-\vdots & \ddots\\
-\delta_{n1} &   \dots     & 0
+0\\
+\delta_{21}  \\
+\vdots   \\
+\delta_{n1} & \dots & 0
 \end{bmatrix}
 \end{equation}
 Chiamate $d_{ij}$ le distanze tra le immagini $ y_{1},\cdots,y_{n}$ nello spazio di dimensione $k$ $d_{ij}=\lvert\lvert{y_i-y_j}\lvert\lvert$, le componenti di $y_i$ nello spazio di arrivo sono $y_{11},y_{12},\cdots,y_{1k}$ e possono essere rappresentate attraverso la seguente matrice:
@@ -326,7 +326,7 @@ In un albero decisionale:
 Allora, dato un albero decisionale generato addestrando il modello predittivo tramite un training set, per classificare una istanza è necessario e sufficiente esaminare l'unico cammino radice-foglia compiuto da tale istanza.\par
 In particolare, in questo studio, ad ogni nodo interno dell'albero è stato associato l'\emph{indice di Gini}, indice di eterogeneità per variabili qualitative. Più precisamente, l'indice di Gini offre una misura della eterogeneità di una distribuzione statistica a partire dai valori delle frequenze relative associate alle \emph{k} modalità di una generica variabile \emph{X}.
 
-\subsection{Classificazione "nome dataset" non ridotto}
+\subsection{Classificazione VCDD non ridotto}
 In \emph{Figura 18} viene mostrato l'albero decisionale generato a partire dal dataset non ridotto. In particolare, in questo albero, il 98\% dei pazienti viene classificato attraverso il percorso radice-foglia più a sinistra.
 
 \begin{figure}[H]
@@ -342,7 +342,7 @@ A partire da questo albero, è stato possibile successivamente generare anche un
 	\caption{treemap corrispondente all'albero decisionale. Evidenzia quale siano le foglie più rilevanti.}
 \end{figure}
 
-\subsection{Classificazione "nome dataset" ridotto}
+\subsection{Classificazione VCDD ridotto}
 In \emph{Figura 20} viene mostrato invece l'albero decisionale generato a partire dal dataset ridotto a 3 componenti tramite la tecnica PCA.
 \begin{figure}[H]
 	\centering
