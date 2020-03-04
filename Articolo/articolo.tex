@@ -39,7 +39,7 @@ In \emph{Sezione 4}, invece, vengono addestrati e illustrati gli alberi decision
 In \emph{Sezione 5}, infine, vengono tratte le conclusioni riguardo le migliori visualizzazioni prodotte e confrontate le metriche dei classificatori addestrati.
 \subsection{Il dataset VCDD}
 Il dataset utilizzato per gli esperimenti è il \emph{Virtual Celiac Disease Diagnosis (VCDD)}, un insieme di dati relativi a pazienti virtuali generato per addestrare un classificatore fuzzy per la diagnosi della celiachia nei bambini siciliani e maltesi.\par
-In particolare il dataset contiene per ogni paziente le seguenti informazioni:
+In particolare il dataset contiene - per ogni paziente - le seguenti dodici informazioni:
 \begin{itemize}
 	\item Anemia: valore booleano. Indica se il paziente soffre di anemia (0 negativo, 1 positivo)
 	\item Osteopenia: valore booleano. Indica se il paziente soffre di osteopenia.
@@ -165,7 +165,7 @@ L'uso della divergenza di Kullback-Leibler come funzione obiettivo consente di a
 	\end{itemize}
 
 	Lo scatterplot 2D per dati bidimensionali è una tecnica di visualizzazione per la rappresentazione su un piano cartesiano dei record di un dataset. In particolare, negli assi $X$ ed $Y$ vengono rappresentate le due componenti del dataset con la più alta varianza, calcolate dalla tecnica di riduzione dimensionale di riferimento. \par
-	Per l'aggiunta di una terza dimensione nello scatterplot 2D, viene associato ad ogni data point del piano un attributo - lo spazio - il cui valore è in relazione con la terza componente. \par
+	Per l'aggiunta di una terza dimensione nello scatterplot 2D, viene associato ad ogni data point del piano un attributo - la taglia del glifo - il cui valore è in relazione con la terza componente. \par
 	Lo scatterplot 3D interattivo è un'altra tecnica per la rappresentazione dei data point del dataset ridotto a tre componenti su un piano cartesiano. In questa tipologia di visualizzazione, la terza componente è rappresentata dall'asse $ Z $. \par
 	Infine, Il plot di Draftman è una soluzione utile per la visualizzazione grafica di attributi multivariati. Tale tecnica consiste nel rappresentare coppie di attributi mediante scatterplot bidimensionali in una matrice $ N \times N $, dove $ N $ è il numero di attributi da rappresentare. \par
 	Per stabilire il numero di componenti ottimale del nostro dataset ridotto è stato creato uno scree-plot, un grafico i cui valori dell'asse delle ascisse corrispondono al numero delle componenti ed i valori dell'asse delle ordinate agli autovalori.
@@ -375,7 +375,7 @@ In particolare, per la PCA è stato condotto un ulteriore studio volto ad interp
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.45\textwidth]{img/PCA_components_interpretation.png}
-	\caption{Interpretazione delle componenti del dataset "nomedataset" per la tecnica di riduzione PCA}
+	\caption{Interpretazione delle componenti del dataset VCDD per la tecnica di riduzione PCA}
 \end{figure}
 
 Inoltre, a seguito dei risultati ottenuti in \emph{Figura 2} e \emph{Figura 24}, è stata condotta una ricerca approfondita per l'individuazione dei data point allineati appartenenti al cluster centrale di \emph{Figura 2}. La \emph{Figura 25} mostra la lista dei pazienti corrispondenti a quei punti. È stato, infatti, interessante notare come una combinazione di valori di \emph{Esami del sangue=0.0}, \emph{TTG IGA=NaN} e \emph{POCT=2.0} possa essere possibile causa di fraintendimento per la diagnosi della celiachia in un paziente.
