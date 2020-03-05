@@ -40,14 +40,14 @@ def PCA_2D():
     X_pca = pca.fit_transform(X)
     # Ricerca dei data point appartenenti al cluster lineare centrale
     listFilter = []
-    dataset_np = datasetWithNan.as_matrix()
-
+    dataset_np = datasetWithNan.to_numpy()
     for i in range(X_pca.shape[0]):
-        if(X_pca[i][0] > 7 and X_pca[i][0] < 9):
+        if(X_pca[i][0] > 7 and X_pca[i][0] < 10):
             listFilter.append(dataset_np[i])
-
     dataFilter_np = np.array(listFilter)
-    dataFilter_pd = pd.DataFrame(data=dataFilter_np, columns=['Anemia','Osteopenia','Diarrea Cronica','Mancata Crescita','Disturbi Genetici','Madre Celiaca','POCT','IGA totali','TTG IGG','TTG_IGA','Esami del sangue','Class']).to_csv("datasetFiltrato.csv", index=False)
+    pd.DataFrame(data=dataFilter_np, columns=['Anemia', 'Osteopenia', 'Diarrea Cronica', 'Mancata Crescita', 'Disturbi Genetici',
+                                              'Madre Celiaca', 'POCT', 'IGA_totali', 'TTG_IGG', 'TTG_IGA', 'Esami del sangue', 'Class']).to_csv("dataset_filtrato.csv", index=False)
+
     # Plot 2D
     plt.scatter(X_pca[:, 0], X_pca[:, 1], c=colormap[Y], alpha=alpha, edgecolors=edgecolors, linewidth=linewidth)
     plt.legend(handles=[pop_a, pop_b], loc='upper right')
@@ -120,7 +120,7 @@ def PCA_components_interpretation():
     pca = PCA().fit(X)
     components = pd.DataFrame(pca.components_)
     features = ["Anemia", "Osteopenia", "Diarrea Cronica", "Mancata Crescita", "Disturbi Genetici",
-                "Madre Celiaca", "POCT", "IGA totali", "TTG IGG", "TTG_IGA", "Esami del sangue"]
+                "Madre Celiaca", "POCT", "IGA_totali", "TTG_IGG", "TTG_IGA", "Esami del sangue"]
     columns = dict()
     rows = dict()
     for i in range(0, len(components)):
@@ -215,7 +215,8 @@ def kernelPCA_SPLOM(n_params):
 def kernelPCA_generate_file(n_params):
     kernelPCA = KernelPCA(n_components=n_params, kernel="sigmoid")
     X_kernelPCA = kernelPCA.fit_transform(X)
-    X_kernelPCA = pd.DataFrame(data=X_kernelPCA, columns=["Componente" + str(i) for i in range(1, len(X_kernelPCA[0]) + 1)])
+    X_kernelPCA = pd.DataFrame(data=X_kernelPCA, columns=["Componente" + str(i)
+                                                          for i in range(1, len(X_kernelPCA[0]) + 1)])
     X_kernelPCA["Class"] = Y
     X_kernelPCA.to_csv("../res/dataset_virtuale_kernelPCA.csv", index=False)
 
@@ -419,7 +420,7 @@ def sub_menu():
 
 blue = "#0000ff"
 yellow = "#ffff00"
-X, Y, datasetWithNan= initDataframe()
+X, Y, datasetWithNan = initDataframe()
 colormap = np.array([blue, yellow])
 alpha = 0.5
 edgecolors = "black"
