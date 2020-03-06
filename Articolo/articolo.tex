@@ -39,7 +39,7 @@ In \emph{Sezione 4}, invece, vengono addestrati e illustrati gli alberi decision
 In \emph{Sezione 5}, infine, vengono tratte le conclusioni riguardo le migliori visualizzazioni prodotte e confrontate le metriche dei classificatori addestrati.
 \subsection{Il dataset VCDD}
 Il dataset utilizzato per gli esperimenti è il \emph{Virtual Celiac Disease Diagnosis (VCDD)}, un insieme di dati relativi a pazienti virtuali generato per addestrare un classificatore fuzzy per la diagnosi della celiachia nei bambini siciliani e maltesi.\par
-In particolare il dataset contiene - per ogni paziente - le seguenti dodici informazioni:
+In particolare il dataset contiene - per ogni paziente - le seguenti 12 informazioni:
 \begin{itemize}
 	\item Anemia: valore booleano. Indica se il paziente soffre di anemia (0 negativo, 1 positivo)
 	\item Osteopenia: valore booleano. Indica se il paziente soffre di osteopenia.
@@ -59,18 +59,18 @@ L'obiettivo delle tecniche di riduzione dimensionale è quello di eseguire un ma
 A seguire vengono descritte brevemente le tecniche di riduzione dimensionale considerate ed utilizzate in questo studio.
 
 \subsection{Principal Component Analysis (PCA)}
-Utilizza una trasformazione ortogonale per convertire una serie di osservazioni di variabili correlate in un insieme di valori linearmente non correlati, chiamate \emph{componenti principali}. La trasformazione è effettuata in modo tale che la prima componente principale abbia la massima varianza e ogni componente principale successiva abbia a sua volta la massima varianza e sia ortogonale alle componenti principali calcolate precedentemente. Assumendo di avere $ n $ osservazioni e $ p $ feature, la matrice dei dati è una matrice $ X \in \mathbb{R}^{n \times p} $, in cui i dati sono standardizzati e in cui, di conseguenza, ogni colonna ha media nulla. Allora, la prima componente principale è la combinazione lineare normalizzata di feature che ha varianza massima:
+Utilizza una trasformazione ortogonale per convertire una serie di osservazioni di variabili correlate in un insieme di valori linearmente non correlati, chiamate \emph{componenti principali}. La trasformazione è effettuata in modo tale che la prima componente principale abbia la massima varianza e ogni componente principale successiva abbia a sua volta la massima varianza e sia ortogonale alle componenti principali calcolate precedentemente. Assumendo di avere $ n $ osservazioni e $ d $ feature, la matrice dei dati è una matrice $ X \in \mathbb{R}^{n \times d} $, in cui i dati sono standardizzati e in cui, di conseguenza, ogni colonna ha media nulla. Allora, la prima componente principale è la combinazione lineare normalizzata di feature che ha varianza massima:
 \begin{equation}
 \nonumber
-Z_1=\phi_{11}X_1+\phi_{21}	X_2+\cdots+\phi_{p1}	X_p
+Z_1=\phi_{11}X_1+\phi_{21}	X_2+\cdots+\phi_{d1}	X_d
 \end{equation}
 
  Ogni colonna è pesata sulla sua media, e si massimizza la varianza delle combinazioni:
 \begin{equation}
 \nonumber
-\max_{\phi_{i1} \cdots \phi_{p1}}{\Biggl\{\frac{1}{n} \sum_{i=1}^n{\Biggl(\sum_{j=1}^p{\phi_{j1}x_{ij}}\Biggr)^2}\Biggr\}} \; \; , \; \; t.c. \; \; \sum_{j=1}^p{\phi_{j1}^2}=1
+\max_{\phi_{i1} \cdots \phi_{d1}}{\Biggl\{\frac{1}{n} \sum_{i=1}^n{\Biggl(\sum_{j=1}^d{\phi_{j1}x_{ij}}\Biggr)^2}\Biggr\}} \; \; , \; \; t.c. \; \; \sum_{j=1}^d{\phi_{j1}^2}=1
 \end{equation}
-Per estrarre la componente principale si estraggono gli autovalori della matrice $X^TX$ e si considera l'autovettore corrispondente al massimo degli autovalori ottenendo il loading vector $\phi_1=[\phi_{11},\phi_{21} \cdots , \phi_{p1}]$. Fatto vengono calcolati gli score $z_{i1}=\sum_{j=1}^p{\phi_{j1} x_{ij}}$. Gli score risultano dalla proiezione delle osservazioni lungo la direzione del loading vector. Per il calcolo delle componenti principali successive si utilizza lo stesso metodo sopra descritto.
+Per estrarre la componente principale si estraggono gli autovalori della matrice $X^TX$ e si considera l'autovettore corrispondente al massimo degli autovalori ottenendo il loading vector $\phi_1=[\phi_{11},\phi_{21} \cdots , \phi_{d1}]$. Fatto vengono calcolati gli score $z_{i1}=\sum_{j=1}^d{\phi_{j1} x_{ij}}$. Gli score risultano dalla proiezione delle osservazioni lungo la direzione del loading vector. Per il calcolo delle componenti principali successive si utilizza lo stesso metodo sopra descritto.
 
 \subsection{Kernel Principal Component Analysis (kernelPCA)}
 PCA consente di effettuare una riduzione dimensionale lineare, che tuttavia non risulta utile per dati con strutture complesse che non possono essere espresse mediante sottospazi lineari. Il kernelPCA, invece, permette di generalizzare PCA in modo tale da effettuare una riduzione dimensionale non lineare. \par
@@ -173,10 +173,10 @@ L'uso della divergenza di Kullback-Leibler come funzione obiettivo consente di a
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.4\textwidth]{img/scree_plot.png}
-		\caption{scree plot del dataset Celiachion}
+		\caption{scree-plot relativo alle componenti principali della PCA per il dataset VCDD}
 	\end{figure}
 
-	La \emph{Figura 1} mostra lo scree-plot applicato al nostro dataset, che indicherebbe come migliore scelta un numero di componenti pari a 2 o 9, dal momento che è presente un "gomito netto" in corrispondenza di questi valori.
+	La \emph{Figura 1} mostra lo scree-plot relativo alle componenti principali della PCA per il dataset VCDD. Questo plot indica che il numero di componenti opportuno da analizzare sia 2, 9 o 10. In particolare è possibile notare come in corrispondenza a 2 componenti sia presente il ”gomito netto” più accentuato.
 
 
 	\subsection{PCA}
@@ -190,7 +190,7 @@ L'uso della divergenza di Kullback-Leibler come funzione obiettivo consente di a
 	\end{figure}
 
 	 L'uso dei colori - blu per la classe \emph{non celiaco} e giallo per la classe \emph{celiaco} - è un'ulteriore informazione che abbiamo voluto aggiungere per verificare la veridicità della separabilità di ciascuna tecnica di riduzione. \par
-	 Dalla \emph{Figura 2} si evince che il PCA - con un numero di componenti principali pari a due - riesce a mantenere una buona separabilità dei data point, ad eccezione fatta per quelli centrali, i quali potrebbero essere facilmente fraintesi. \par
+	 Dalla \emph{Figura 2} si evince che il PCA - con un numero di componenti principali pari a due - riesce a mantenere una buona separabilità dei data point. \par
 
  	 Una situazione simile a quella di \emph{Figura 2} è evidente in \emph{Figura 3}, che mostra lo scatterplot 2D a seguito della riduzione della dimensionalità del dataset a tre componenti per mezzo della PCA.
 
@@ -375,7 +375,7 @@ In particolare, per la PCA è stato condotto un ulteriore studio volto ad interp
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.45\textwidth]{img/PCA_components_interpretation.png}
-	\caption{Interpretazione delle componenti del dataset VCDD per la tecnica di riduzione PCA}
+	\caption{Matrice di correlazione delle componenti del dataset VCDD per la tecnica di riduzione PCA}
 \end{figure}
 
 Inoltre, a seguito dei risultati ottenuti in \emph{Figura 2} e \emph{Figura 24}, è stata condotta una ricerca approfondita per l'individuazione dei data point allineati appartenenti al cluster centrale di \emph{Figura 2}. La \emph{Figura 25} mostra la lista dei pazienti corrispondenti a quei punti. È stato, infatti, interessante notare come una combinazione di valori di \emph{Esami del sangue=0.0}, \emph{TTG IGA=NaN} e \emph{POCT=2.0} possa essere possibile causa di fraintendimento per la diagnosi della celiachia in un paziente.
