@@ -70,7 +70,7 @@ Z_1=\phi_{11}X_1+\phi_{21}	X_2+\cdots+\phi_{d1}	X_d
 \nonumber
 \max_{\phi_{i1} \cdots \phi_{d1}}{\Biggl\{\frac{1}{n} \sum_{i=1}^n{\Biggl(\sum_{j=1}^d{\phi_{j1}x_{ij}}\Biggr)^2}\Biggr\}} \; \; , \; \; t.c. \; \; \sum_{j=1}^d{\phi_{j1}^2}=1
 \end{equation}
-Per estrarre la componente principale si estraggono gli autovalori della matrice $X^TX$ e si considera l'autovettore corrispondente al massimo degli autovalori ottenendo il loading vector $\phi_1=[\phi_{11},\phi_{21} \cdots , \phi_{d1}]$. Fatto vengono calcolati gli score $z_{i1}=\sum_{j=1}^d{\phi_{j1} x_{ij}}$. Gli score risultano dalla proiezione delle osservazioni lungo la direzione del loading vector. Per il calcolo delle componenti principali successive si utilizza lo stesso metodo sopra descritto.
+Per estrarre la componente principale si estraggono gli autovalori della matrice $X^TX$ e si considera l'autovettore corrispondente al massimo degli autovalori ottenendo il loading vector $\phi_1=[\phi_{11},\phi_{21} \cdots , \phi_{d1}]$. Fatto ciò, vengono calcolati gli score $z_{i1}=\sum_{j=1}^d{\phi_{j1} x_{ij}}$. Quest'ultimi risultano dalla proiezione delle osservazioni lungo la direzione del loading vector. Per il calcolo delle componenti principali successive si utilizza lo stesso metodo sopra descritto.
 
 \subsection{Kernel Principal Component Analysis (kernelPCA)}
 PCA consente di effettuare una riduzione dimensionale lineare, che tuttavia non risulta utile per dati con strutture complesse che non possono essere espresse mediante sottospazi lineari. Il kernelPCA, invece, permette di generalizzare PCA in modo tale da effettuare una riduzione dimensionale non lineare. \par
@@ -98,7 +98,7 @@ Se il dataset risultante dalla proiezione $\{\phi(x_i)\}$ non dovesse avere medi
 \nonumber
 \tilde{K}=K-1_NK-K1_N+1_NK1_N
 \end{equation}
-dove $1_N$ è una matrice dimensione $N \times N$ con tutti gli elementi uguali a $ \frac{1}{N}$.
+dove $1_N$ è una matrice $N \times N$ con tutti gli elementi uguali a $ \frac{1}{N}$.
 Alcuni dei kernel più comunemente utilizzati sono:
 \begin{itemize}
 \item \emph{kernel polinomiale}: $ \kappa(x,y)=(x^Ty)^d $
@@ -125,7 +125,7 @@ y_{11}           & \dots         & y_{1k}         \\
 y_{n1}          & \dots         & y_{nk}         \\
 \end{bmatrix}
 \end{equation}
-Allora, l'obiettivo è trovare la configurazione $y_{1},\cdots,y_{n}$ per la quale le $\frac{n(n-1)}{2}$ distanze $d_{ij}$ siano più simili possibile alle distanze originali $\delta_{ij}$. Tuttavia, molto spesso, non è possibile trovare una configurazione per la quale $d_{ij} = \delta_{ij}$ per tutti gli $i \neq j$. Per trovare la configurazione migliore fra tutte quelle possibile, è necessario definire un criterio d'errore, spesso chiamato funzione di Stress, definito come segue:
+Allora, l'obiettivo è trovare la configurazione $y_{1},\cdots,y_{n}$ per la quale le $\frac{n(n-1)}{2}$ distanze $d_{ij}$ siano più simili possibile alle distanze originali $\delta_{ij}$. Tuttavia, molto spesso, non è possibile trovare una configurazione per la quale $d_{ij} = \delta_{ij}$ per tutti gli $i \neq j$. Per trovare la configurazione migliore fra tutte quelle possibili, è necessario definire un criterio d'errore, spesso chiamato funzione di Stress, definito come segue:
 \begin{equation}
 \nonumber
 Stress^2=\frac{\sum_{i<j}{(d_{ij}-\delta_{ij})^2}}{\sum_{i<j}{\delta_{ij}^2}}
@@ -164,51 +164,46 @@ L'uso della divergenza di Kullback-Leibler come funzione obiettivo consente di a
 		\item plot di Draftman
 	\end{itemize}
 
-	Lo scatterplot 2D per dati bidimensionali è una tecnica di visualizzazione per la rappresentazione su un piano cartesiano dei record di un dataset. In particolare, negli assi $X$ ed $Y$ vengono rappresentate le due componenti del dataset con la più alta varianza, calcolate dalla tecnica di riduzione dimensionale di riferimento. \par
+	Lo scatterplot 2D per dati bidimensionali è una tecnica di visualizzazione per la rappresentazione su un piano cartesiano dei record di un dataset. In particolare, negli assi $X$ ed $Y$ vengono rappresentate le due componenti del dataset calcolate mediante una delle tecniche di riduzione dimensionale descritte in \emph{Sezione 2}. \par
 	Per l'aggiunta di una terza dimensione nello scatterplot 2D, viene associato ad ogni data point del piano un attributo - la taglia del glifo - il cui valore è in relazione con la terza componente. \par
 	Lo scatterplot 3D interattivo è un'altra tecnica per la rappresentazione dei data point del dataset ridotto a tre componenti su un piano cartesiano. In questa tipologia di visualizzazione, la terza componente è rappresentata dall'asse $ Z $. \par
 	Infine, Il plot di Draftman è una soluzione utile per la visualizzazione grafica di attributi multivariati. Tale tecnica consiste nel rappresentare coppie di attributi mediante scatterplot bidimensionali in una matrice $ N \times N $, dove $ N $ è il numero di attributi da rappresentare. \par
 	Per stabilire il numero di componenti ottimale del nostro dataset ridotto è stato creato uno scree-plot, un grafico i cui valori dell'asse delle ascisse corrispondono al numero delle componenti ed i valori dell'asse delle ordinate agli autovalori.
 
-	\begin{figure}[h]
-		\centering
-		\includegraphics[width=0.4\textwidth]{img/scree_plot.png}
-		\caption{scree-plot relativo alle componenti principali della PCA per il dataset VCDD}
-	\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.4\textwidth]{img/scree_plot.png}
+	\caption{scree-plot relativo alle componenti principali della PCA per il dataset VCDD}
+\end{figure}
 
 	La \emph{Figura 1} mostra lo scree-plot relativo alle componenti principali della PCA per il dataset VCDD. Questo plot indica che il numero di componenti opportuno da analizzare sia 2, 9 o 10. In particolare è possibile notare come in corrispondenza a 2 componenti sia presente il ”gomito netto” più accentuato.
 
-
-	\subsection{PCA}
-
+\subsection{PCA}
 	La \emph{Figura 2} mostra lo scatterplot 2D bidimensionale dopo aver ridotto il nostro dataset con due componenti per mezzo della tecnica di riduzione PCA.
 
-	\begin{figure}[h]
+\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.4\textwidth]{img/PCA_2Dnc2.png}
 		\caption{scatterplot 2D bidimensionale applicato su PCA}
-	\end{figure}
-
+\end{figure} 
 	 L'uso dei colori - blu per la classe \emph{non celiaco} e giallo per la classe \emph{celiaco} - è un'ulteriore informazione che abbiamo voluto aggiungere per verificare la veridicità della separabilità di ciascuna tecnica di riduzione. \par
-	 Dalla \emph{Figura 2} si evince che il PCA - con un numero di componenti principali pari a due - riesce a mantenere una buona separabilità dei data point. \par
-
- 	 Una situazione simile a quella di \emph{Figura 2} è evidente in \emph{Figura 3}, che mostra lo scatterplot 2D a seguito della riduzione della dimensionalità del dataset a tre componenti per mezzo della PCA.
+	 Dalla \emph{Figura 2} si evince che il PCA - con un numero di componenti principali pari a due - riesce a mantenere una buona separabilità dei data point. \newpage
+ Una situazione simile a quella di \emph{Figura 2} è evidente in \emph{Figura 3}, che mostra lo scatterplot 2D a seguito della riduzione della dimensionalità del dataset a tre componenti per mezzo della PCA.
 
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.4\textwidth]{img/PCA_2Dnc3.png}
 		\caption{scatterplot 2D tridimensionale applicato su PCA}
 	\end{figure}
+Ben evidente è la separabilità dei data point presenti nello scatterplot 3D interattivo, come visibile in \emph{Figura 4}.
 
-	Ben evidente è la separabilità dei data point presenti nello scatterplot 3D interattivo, come visibile in \emph{Figura 4}.
-
-	\begin{figure}[h]
+	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.4\textwidth]{img/PCA_i3D.png}
 		\caption{scatterplot 3D interattivo applicato su PCA}
 	\end{figure}
-
-	Infine, la \emph{Figura 5} mostra il plot di Draftman applicato al dataset ridotto a 9 componenti per mezzo della tecnica PCA.
+\newpage
+Infine, la \emph{Figura 5} mostra il plot di Draftman applicato al dataset ridotto a 9 componenti per mezzo della tecnica PCA.
 
 	\begin{figure}[h]
 		\centering
@@ -216,12 +211,9 @@ L'uso della divergenza di Kullback-Leibler come funzione obiettivo consente di a
 		\caption{plot di Draftman applicato su PCA}
 	\end{figure}
 
-	Da tale rappresentazione è possibile notare come la Componente 1, se messo in relazione con tutte le altre componenti della matrice, riesca a mantenere la migliore separabilità.
-
-
-	\subsection{kernelPCA}
-
-	In \emph{Figura 6} viene raffigurato lo scatterplot 2D bidimensionale a seguito della riduzione del dataset ridotto a due componenti per mezzo del kernelPCA.
+	Da tale rappresentazione è possibile notare come la Componente 1, se messa in relazione con tutte le altre componenti della matrice, riesca a mantenere la migliore separabilità.
+\subsection{kernelPCA}
+In \emph{Figura 6} viene raffigurato lo scatterplot 2D bidimensionale a seguito della riduzione del dataset ridotto a due componenti per mezzo del kernelPCA.
 
 	\begin{figure}[h]
 		\centering
@@ -229,17 +221,16 @@ L'uso della divergenza di Kullback-Leibler come funzione obiettivo consente di a
 		\caption{scatterplot 2D bidimensionale applicato su kernelPCA}
 	\end{figure}
 
-	Da tale rappresentazione - anche se non in maniera netta, data la formazione di diverse agglomerazioni - si evince comunque una buona separabilità dei data point. \par
+	Da tale rappresentazione - anche se non in maniera netta, data la formazione di diverse agglomerazioni - si evince comunque una buona separabilità dei data point.  \par 
+La percezione di separabilità dei data point diminuisce drasticamente con il plot 2D tridimensionale, come ben visibile in \emph{Figura 7}. \newpage
 
-	La percezione di separabilità dei data point diminuisce drasticamente con il plot 2D tridimensionale, come ben visibile in \emph{Figura 7}.
-
-	\begin{figure}[h]
+	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.4\textwidth]{img/kernelPCA_2Dnc3.png}
 		\caption{scatterplot 2D tridimensionale applicato su kernelPCA}
 	\end{figure}
 
-	In \emph{Figura 8}, invece, é possibile notare come i data point siano ben distinti con una rappresentazione grafica 3D, risultando di fatto migliore delle precedenti per questa tecnica di riduzione.
+In \emph{Figura 8}, invece, é possibile notare come i data point siano ben distinti con una rappresentazione grafica 3D, risultando di fatto migliore delle precedenti per questa tecnica di riduzione.
 
 	\begin{figure}[H]
 		\centering
@@ -247,49 +238,44 @@ L'uso della divergenza di Kullback-Leibler come funzione obiettivo consente di a
 		\caption{scatterplot 3D interattivo applicato su kernelPCA}
 	\end{figure}
 
-	Infine, la \emph{Figura 9} mostra il plot di Draftman applicato su kernelPCA per un numero di componenti pari a 9, del tutto simile al plot di Draftman applicato su PCA per lo stesso numero di componenti.
-
+	Infine, la \emph{Figura 9} mostra il plot di Draftman applicato su kernelPCA per un numero di componenti pari a 9, del tutto simile al plot di Draftman applicato su PCA per lo stesso numero di componenti. \par
 	\begin{figure}[h]
 		\centering
-		\includegraphics[width=0.4\textwidth]{img/kernelPCA_SPLOM.png}
+		\includegraphics[width=0.69\columnwidth, keepaspectratio]{img/kernelPCA_SPLOM.png}
 		\caption{plot di Draftman applicato su kernelPCA}
 	\end{figure}
-
-	\subsection{MDS}
+\subsection{MDS}
 
 	La \emph{Figura 10} mostra lo scatterplot 2D bidimensionale del dataset ridotto a due componenti per mezzo del Multi-Dimensional Scaling (MDS).
 
-	\begin{figure}[H]
+	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.5\textwidth]{img/MDS_2Dnc2.png}
 		\caption{scatterplot 2D bidimensionale applicato su MDS}
 	\end{figure}
-
 	È possibile notare dallo scatterplot 2D bidimensionale come MDS riesca, nonostante i numerosi outliers, a distinguere i punti, seppur in maniera decisamente peggiore delle due tecniche di riduzione precedentemente descritte. Tuttavia, non si ha la medesima percezione applicando le altre tecniche di visualizzazione, come mostrato in \emph{Figura 11}, \emph{Figura 12} e \emph{Figura 13}.
-
-	\begin{figure}[H]
+	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.5\textwidth]{img/MDS_2Dnc3.png}
 		\caption{scatterplot 2D tridimensionale applicato su MDS}
 	\end{figure}
 
-	\begin{figure}[H]
+	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.5\textwidth]{img/MDS_i3D.png}
 		\caption{scatterplot 3D interattivo applicato su MDS}
 	\end{figure}
 
-	\begin{figure}[H]
+	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.5\textwidth]{img/MDS_SPLOM.png}
 		\caption{plot di Draftman applicato su applicato su MDS}
-	\end{figure}
+	\end{figure} 
+\newpage
+ \subsection{t-SNE}
 
-    \subsection{t-SNE}
-
-    L'ultima tecnica di riduzione applicata è il t-SNE, rivelatosi poco efficace per la separazione dei data point del dataset, come è possibile evincere in \emph{Figura 14}, \emph{Figura 15}, \emph{Figura 16} e \emph{Figura 17}.
-
-	\begin{figure}[H]
+    L'ultima tecnica di riduzione applicata è il t-SNE, rivelatosi poco efficace per la separazione dei data point del dataset, come è possibile evincere in \emph{Figura 14}, \emph{Figura 15}, \emph{Figura 16} e \emph{Figura 17}. \newpage
+\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.4\textwidth]{img/tSNE_2Dnc2.png}
 		\caption{scatterplot 2D bidimensionale applicato su t-SNE}
@@ -313,7 +299,6 @@ L'uso della divergenza di Kullback-Leibler come funzione obiettivo consente di a
 		\caption{plot di Draftman applicato su t-SNE}
 	\end{figure}
 
-
 \section{Alberi decisionali}
 In machine learning, un albero decisionale è la rappresentazione di un modello predittivo progettato al fine di classificare le istanze di grandi quantità di dati (per questo motivo viene anche chiamato albero di classificazione), contenente solamente strutture selettive.\par
 In un albero decisionale:
@@ -325,7 +310,6 @@ In un albero decisionale:
 \end{itemize}
 Allora, dato un albero decisionale generato addestrando il modello predittivo tramite un training set, per classificare una istanza è necessario e sufficiente esaminare l'unico cammino radice-foglia compiuto da tale istanza.\par
 In particolare, in questo studio, ad ogni nodo interno dell'albero è stato associato l'\emph{indice di Gini}, indice di eterogeneità per variabili qualitative. Più precisamente, l'indice di Gini offre una misura della eterogeneità di una distribuzione statistica a partire dai valori delle frequenze relative associate alle \emph{k} modalità di una generica variabile \emph{X}.
-
 \subsection{Classificazione VCDD non ridotto}
 In \emph{Figura 18} viene mostrato l'albero decisionale generato a partire dal dataset non ridotto. In particolare, in questo albero, il 98\% dei pazienti viene classificato attraverso il percorso radice-foglia più a sinistra.
 
@@ -380,7 +364,7 @@ In particolare, per la PCA è stato condotto un ulteriore studio volto ad interp
 
 Inoltre, a seguito dei risultati ottenuti in \emph{Figura 2} e \emph{Figura 24}, è stata condotta una ricerca approfondita per l'individuazione dei data point allineati appartenenti al cluster centrale di \emph{Figura 2}. La \emph{Figura 25} mostra la lista dei pazienti corrispondenti a quei punti. È stato, infatti, interessante notare come una combinazione di valori di \emph{Esami del sangue=0.0}, \emph{TTG IGA=NaN} e \emph{POCT=2.0} possa essere possibile causa di fraintendimento per la diagnosi della celiachia in un paziente.
 
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.45\textwidth]{img/pazientiFiltrati.png}
 	\caption{lista dei pazienti corrispondenti ai punti allineati del cluster centrale di \emph{Figura 2}}
