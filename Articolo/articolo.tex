@@ -26,7 +26,7 @@ riduzione dimensionale, relative visualizzazioni e classificazione
   \begin{@twocolumnfalse}
   \maketitle
     \begin{abstract}
-Abbiamo condotto uno studio empirico per determinare le relazioni presenti tra quattro diverse tecniche di visualizzazione (scatterplot 2D per dati bidimensionali, scatterplot 2D per dati tridimensionali, scatterplot 3D interattivo e plot di Draftman) e quattro diverse tecniche per la riduzione della dimensionalità (PCA, kernel PCA, MDS e t-SNE). L'analisi è stata effettuata su un dataset virtuale contenente dati biomedici utilizzati per la diagnosi della celiachia e due classi: \emph{celiaco} e \emph{non celiaco}. Dalle rappresentazioni grafiche si evince come PCA e kernel PCA siano più efficienti per la visualizzazione delle due classi. Inoltre si nota che nella maggior parte dei casi gli scatterplot 2D sono già sufficienti per rilevare una buona distinzione tra le classi. Sono stati creati, dunque,  degli alberi decisionali sia per il dataset non ridotto, sia per i dataset ridotti tramite le tecniche precedentemente citate. Infine i risultati ottenuti sono stati confrontati - in termini di accuratezza - reciprocamente. \\
+Abbiamo condotto uno studio empirico per determinare le relazioni presenti tra quattro diverse tecniche di visualizzazione - scatterplot 2D per dati bidimensionali, scatterplot 2D per dati tridimensionali, scatterplot 3D interattivo e plot di Draftman - e quattro diverse tecniche per la riduzione della dimensionalità - PCA, kernel PCA, MDS e t-SNE. L'analisi è stata effettuata su un dataset virtuale contenente dati biomedici utilizzati per la diagnosi della celiachia e due classi: \emph{celiaco} e \emph{non celiaco}. Dalle rappresentazioni grafiche si evince come PCA e kernel PCA siano più efficienti per la visualizzazione delle due classi. Inoltre si nota che nella maggior parte dei casi gli scatterplot 2D sono già sufficienti per rilevare una buona distinzione tra le classi. Sono stati creati, dunque,  degli alberi decisionali sia per il dataset non ridotto, sia per i dataset ridotti tramite le tecniche precedentemente citate. Infine i risultati ottenuti sono stati confrontati - in termini di accuratezza - reciprocamente. \\
     \end{abstract}
   \end{@twocolumnfalse}
 ]
@@ -34,7 +34,7 @@ Abbiamo condotto uno studio empirico per determinare le relazioni presenti tra q
 \section{Introduzione}
 Ridurre la dimensionalità dei dati è uno dei task fondamentali per l'analisi dei dati e per le eventuali elaborazioni successive (regressione, classificazione, etc.).\par
 In \emph{Sezione 2} sono descritte le tecniche di riduzione dimensionale applicate al nostro dataset: PCA, kernel PCA, MDS e t-SNE.\par
-In \emph{Sezione 3} vengono dapprima definite le quattro tecniche di visualizzazione impiegate: scatterplot 2D per dati bidimensionali, scatterplot 2D per dati tridimensionali, scatterplot 3D interattivo e plot di Draftman; successivamente queste vengono applicate per ciascuna tecnica di riduzione.\par
+In \emph{Sezione 3} vengono dapprima definite le quattro tecniche di visualizzazione impiegate: scatterplot 2D per dati bidimensionali, scatterplot 2D per dati tridimensionali, scatterplot 3D interattivo e plot di Draftman; successivamente queste vengono applicate per i dati ridotti mediante ogni tecnica.\par
 In \emph{Sezione 4}, invece, vengono addestrati e illustrati gli alberi decisionali sia per il dataset non ridotto, sia per i dataset ridotti attraverso le tecniche di riduzione trattate.\par
 In \emph{Sezione 5}, infine, vengono tratte le conclusioni riguardo le migliori visualizzazioni prodotte e confrontate le metriche dei classificatori addestrati.
 \subsection{Il dataset VCDD}
@@ -59,7 +59,7 @@ L'obiettivo delle tecniche di riduzione dimensionale è quello di eseguire un ma
 A seguire vengono descritte brevemente le tecniche di riduzione dimensionale considerate ed utilizzate in questo studio.
 
 \subsection{Principal Component Analysis (PCA)}
-Utilizza una trasformazione ortogonale per convertire una serie di osservazioni di variabili correlate in un insieme di valori linearmente non correlati, chiamate \emph{componenti principali}. La trasformazione è effettuata in modo tale che la prima componente principale abbia la massima varianza e ogni componente principale successiva abbia a sua volta la massima varianza e sia ortogonale alle componenti principali calcolate precedentemente. Assumendo di avere $ n $ osservazioni e $ d $ feature, la matrice dei dati è una matrice $ X \in \mathbb{R}^{n \times d} $, in cui i dati sono standardizzati e in cui, di conseguenza, ogni colonna ha media nulla. Allora, la prima componente principale è la combinazione lineare normalizzata di feature che ha varianza massima:
+Utilizza una trasformazione ortogonale per convertire una serie di osservazioni di variabili correlate in un insieme di valori linearmente non correlati, chiamati \emph{componenti principali}. La trasformazione è effettuata in modo tale che la prima componente principale abbia la massima varianza e ogni componente principale successiva abbia a sua volta la massima varianza e sia ortogonale alle componenti principali calcolate precedentemente. Assumendo di avere $ n $ osservazioni e $ d $ feature, la matrice dei dati è una matrice $ X \in \mathbb{R}^{n \times d} $, in cui i dati sono standardizzati e in cui, di conseguenza, ogni colonna ha media nulla. Allora, la prima componente principale è la combinazione lineare normalizzata di feature che ha varianza massima:
 \begin{equation}
 \nonumber
 Z_1=\phi_{11}X_1+\phi_{21}	X_2+\cdots+\phi_{d1}	X_d
@@ -78,9 +78,9 @@ Assumendo di avere una trasformazione non lineare $\phi$ definita come segue: $\
 \begin{itemize}
 \item le nuove feature proiettate hanno media 0: $ \frac{1}{N}\sum_{i=1}^N{\phi(x_i)}=0$
 \item la matrice di covarianza delle feature proiettate ha dimensione $ M \times M $ ed è calcolata come segue: $ C=\frac{1}{N}\sum_{i=1}^N{\phi(x_i)\phi(x_i)^T} $
-\item gli autovalori e gli autovettori della matrice sopra definita sono dati da: $ Cv_k=\lambda_k v_k $ con $k=1,2,\cdots,M$.
+\item gli autovalori e gli autovettori della matrice sopra definita si ottengono come: $ Cv_k=\lambda_k v_k $ con $k=1,2,\cdots,M$.
 \end{itemize}
-Detto ciò, viene scelta una \emph{funzione kernel} $ \kappa(x_i,x_j)=\phi(x_i)^T\phi(x_j) $. Allora, se viene utilizzata una notazione matriciale si avrà che:
+Considerato questo, viene scelta una \emph{funzione kernel} $ \kappa(x_i,x_j)=\phi(x_i)^T\phi(x_j) $. Allora, utilizzando una notazione matriciale, si avrà che:
 \begin{equation}
 \nonumber
 K^2a_k=\lambda_kNKa_k
@@ -152,10 +152,10 @@ La differenza principale è l'uso nello spazio a dimensionalità ridotta di una 
 \nonumber
 KL(P\lvert \lvert Q)=\sum_{i \neq j}{\log{\frac{p_{ij}}{q_{ij}}}}
 \end{equation}
-L'uso della divergenza di Kullback-Leibler come funzione obiettivo consente di avere penalità elevate se punti vicini nello spazio originale  vengono considerati lontani nello spazio a dimensionalità ridotta , mentre il viceversa ha un'influenza minore, tendendo quindi a preservare la struttura locale della distribuzione dei punti. Il risultato è una mappa a bassa dimensionalità che riflette le similarità tra i punti nello spazio ad alta dimensionalità.
+L'uso della divergenza di Kullback-Leibler come funzione obiettivo consente di avere penalità elevate se punti vicini nello spazio originale  vengono considerati lontani nello spazio a dimensionalità ridotta, mentre il viceversa ha un'influenza minore, tendendo quindi a preservare la struttura locale della distribuzione dei punti. Il risultato è una mappa a bassa dimensionalità che riflette le similarità tra i punti nello spazio ad alta dimensionalità.
 \section{Tecniche di visualizzazione}
 	L'analisi esplorativa dei dati è un'operazione finalizzata ad ottenere, per mezzo di rappresentazioni visuali, quanta più informazione possibile riguardo al problema in esame in un dataset.
-	Per stabilire l'efficienza delle quattro tecniche di riduzione dimensionale - descritte in \emph{Sezione 2} - nell'individuare le correlazioni tra le componenti del dataset VCDD sono state utilizzate quattro diverse tecniche di visualizzazione:
+	Per stabilire l'efficienza delle quattro tecniche di riduzione dimensionale - descritte in \emph{Sezione 2} - nell'individuare le correlazioni tra le componenti del dataset VCDD, sono state utilizzate quattro diverse tecniche di visualizzazione:
 
 	\begin{itemize}
 		\item scatterplot 2D per dati bidimensionali
@@ -186,7 +186,7 @@ L'uso della divergenza di Kullback-Leibler come funzione obiettivo consente di a
 		\includegraphics[width=0.4\textwidth]{img/PCA_2Dnc2.png}
 		\caption{scatterplot 2D bidimensionale applicato su PCA}
 \end{figure} 
-	 L'uso dei colori - blu per la classe \emph{non celiaco} e giallo per la classe \emph{celiaco} - è un'ulteriore informazione che abbiamo voluto aggiungere per verificare la veridicità della separabilità di ciascuna tecnica di riduzione. \par
+	 L'uso dei colori - blu per la classe \emph{non celiaco} e giallo per la classe \emph{celiaco} - è un'ulteriore informazione aggiunta per verificare la veridicità della separabilità di ciascuna tecnica di riduzione. \par
 	 Dalla \emph{Figura 2} si evince che il PCA - con un numero di componenti principali pari a due - riesce a mantenere una buona separabilità dei data point. \newpage
  Una situazione simile a quella di \emph{Figura 2} è evidente in \emph{Figura 3}, che mostra lo scatterplot 2D a seguito della riduzione della dimensionalità del dataset a tre componenti per mezzo della PCA.
 
