@@ -1,0 +1,4 @@
+sklearn
+seaborn
+pydotplus
+squarify
