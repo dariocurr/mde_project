@@ -1,4 +1,4 @@
-# mde_project
+# Dimensionality reduction, related visualizations, and classification
 
 Empirical study to determine the relationships present between four different visualization techniques:
 
