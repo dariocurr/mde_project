@@ -19,3 +19,9 @@ From the graphical representations we can see that PCA and kernel PCA are more e
 Moreover, it is noted that in most cases the 2D scatterplots are already sufficient to detect a good distinction between the classes. 
 Decision trees have been created both for the unreduced dataset and for the datasets reduced by the previously mentioned techniques.
 Finally, the results obtained were compared in terms of accuracy
+
+## How to run
+
+In order to replicate and to extend the experiment locally, build the
+`dev container` using the [Docker](https://www.docker.com/) extension of
+[VScode](https://code.visualstudio.com/).
