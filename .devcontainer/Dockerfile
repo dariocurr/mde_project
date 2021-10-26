@@ -19,7 +19,4 @@ RUN rm -r ${REQUIREMENTS_FOLDER}
 RUN apt update
 RUN apt upgrade -y
 
-RUN git config --global user.email "dariocurr@gmail.com",
-RUN git config --global user.name "Dario Curreri",
-
 USER ${USER}
